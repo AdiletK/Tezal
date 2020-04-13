@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Operation page</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col-xl-9 col-lg-12 col-md-6 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header">
+                    <div class="form-group">
+                        <label for="code" class="text-dark font-bold" data-th-text="#{clientDetailPage.label.personal_code}"></label>
+                        <input id="code" type="text" class="form-control"/>
+                    </div>
+                    <button id="getClient" th:text="#{button.label.search}"
+                            class="btn btn-success" >
+                    </button>
+            </div>
+            <div class="card-body">
+                <input hidden="hidden" id="orgId" th:value="${orgId}"/>
+                <div id="result" class="card-body p-b-10" style="display:none;">
+                    <div class="table-responsive">
+                        <form id="formCreate" th:object="${confirmBalance}" th:action="'/cashier/create'" method="get" >
+                            <input hidden="hidden" id="clientId" th:field="*{clientId}" th:value="${confirmBalance.clientId}"/> <br>
+                            <label class="border-0 text-dark font-bold" data-th-text="#{clientDetailPage.label.first_name}"></label>
+                            <h3 id="firstName"></h3>
+                            <table class="table">
+                                <thead class="bg-light">
+                                <tr class="border-0">
+                                    <th class="border-0" data-th-text="#{label.bonus_type}"></th>
+                                    <th class="border-0" data-th-text="#{clientList.button.label.balance}"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="tableBody">
+                                </tbody>
+                            </table>
+                            <label class="text-dark font-bold" for="input-select" data-th-text="#{label.bonus_type}"></label>
+                                <select th:field="*{typeId}"  class="form-control" id="input-select">
+                                    <option  id="typeId" th:each="type : ${orgBonusTypeList}" th:value="${type.id}" th:text="${type.name}" ></option>
+                                </select>
+
+                            <label for="invoiceAmount" class="text-dark font-bold" data-th-text="#{cashier.label.invoiceAmount}"></label>
+                            <input  id="invoiceAmount" th:field="*{invoiceAmount}" type="number" class="form-control" th:text="${confirmBalance.invoiceAmount}" required min="0" />
+                            <p id="amountError" style="color:red;" ></p>
+                            <label for="point" class="text-dark font-bold" data-th-text="#{cashier.label.point}"></label>
+                            <input  id="point" th:field="*{point}"   type="number" class="form-control" th:text="${confirmBalance.point}" required min="0" value="0"/>
+                            <p id="pointError" style="color:red;" ></p>
+                            <label for="numberCheck" class="text-dark font-bold" data-th-text="#{cashier.label.numberCheck}"></label>
+                            <input  id="numberCheck"  th:field="*{numberCheck}" type="text" min="0" class="form-control" th:text="${confirmBalance.numberCheck}" required/>
+                            <p id="checkError" style="color:red;" ></p>
+                        </form>
+                        <div style="text-align: center;">
+                            <button id="continue" th:text="#{button.label.continue}"
+                                    class="btn btn-success m-t-20">
+                            </button>
+                        </div>
+                    </div>
+            </div>
+                <script type="application/javascript">
+                    $(document).ready(function() {
+                        $('#getClient').on("click", function () {
+                            var orgId =  $("#orgId").val();
+                            var code = document.getElementById("code").value;
+                            $.ajax({
+                                url: "/api/balance/getClientByCodeAndOrgId/" + code + "/" + orgId,
+                                type: "GET",
+                                data: ({
+                                    code: code
+                                }),
+                                dataType: 'json',
+                                contentType: "application/json",
+                                success: function (data) {
+                                    var buffer = "";
+                                    var tableBody = $("#tableBody");
+                                    if (data.length>0){
+                                        document.getElementById("result").style.display = "flex";
+                                        document.getElementById("firstName").innerHTML = data[0].firstName + " " + data[0].lastName;
+                                        // document.getElementById("clientId").innerText = data[0].clientId;
+                                        $("#clientId").val(data[0].clientId);
+                                        for (var i=0; i < data.length; i++){
+                                            var item = data[i];
+                                            buffer += "<tr>" +
+                                                "<td>" + item.type + "</td>" +
+                                                "<td>" + item.amount + "</td>" +
+                                                "</tr>"
+                                        }
+                                    }else {
+                                        document.getElementById("result").style.display = "none";
+                                        alert("Couldn't find element!");
+                                        buffer += "<h3 class='text-danger font-bold m-l-10 m-t-10'> Not found !!! </h3>"
+                                    }
+                                    tableBody.html(buffer);
+
+                                },
+                                error: function (request, error) {
+                                    console.log(request);
+                                    alert("Couldn't find element!");
+                                    console.log(error);
+                                }
+                            });
+                        });
+
+                        $('#continue').on("click", function () {
+                            document.getElementById("amountError").innerHTML = "";
+                            document.getElementById("checkError").innerHTML = "";
+                            document.getElementById("pointError").innerHTML = "";
+                            const clientId = $("#clientId").val();
+                            const typeId = $("#input-select option:selected").val();
+                            const point = document.getElementById("point").value;
+                            let aError, pError, cError;
+                            // Get the value of the input field with id="numb"
+                            const amount = document.getElementById("invoiceAmount").value;
+                            const check = document.getElementById("numberCheck").value;
+                            // If x is Not a Number or less than one or greater than 10
+                            if (amount==="" || amount < 0) {
+                                aError = "Field must be great then 0";
+                                document.getElementById("amountError").innerHTML = aError;
+                            }
+                            else if (check ==="" || check < 0) {
+                                cError = "Field must be great then 0";
+                                document.getElementById("checkError").innerHTML = cError;
+                            }
+                            else if (point==="" || point < 0) {
+                                pError = "Field must be great then 0";
+                                document.getElementById("pointError").innerHTML = pError;
+                            }
+                            else {
+                                $.ajax({
+                                    url: "/cashier/check?clientId=" + clientId + "&tId=" + typeId + "&point=" + point,
+                                    type: "GET",
+                                    dataType: 'json',
+                                    contentType: "application/json",
+                                    success: function (message) {
+                                        if (message[0] === "SUCCESS") {
+                                            const form = document.getElementById("formCreate");
+                                            form.submit();
+                                        } else if (message[0] === "FAIL"){
+                                            alert("Вы не можете использовать больше 50% баллов!");
+                                        }
+                                    },
+                                    error: function (request, error) {
+                                        alert("Нет баланса!!!");
+                                    }
+                                });
+                            }
+                        });
+                    });
+
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
