@@ -12,6 +12,9 @@
     <div class="col-xl-9 col-lg-12 col-md-6 col-sm-12 col-12">
         <div class="card">
             <div class="card">
+                <div class="card-header">
+                    <H3>История продаж</H3>
+                </div>
                 <div class="card-body">
                     <form th:action="'/cashier/history/filter'" method="get">
                         <div class="row">
@@ -51,10 +54,10 @@
                 <table class="table">
                     <thead class="bg-light">
                     <tr class="border-0">
-                        <th class="border-0" >User</th>
-                        <th class="border-0" >Date</th>
-                        <th class="border-0" >Sum</th>
-                        <th class="border-0" >Point</th>
+                        <th class="border-0" >Пользователь</th>
+                        <th class="border-0" >Дата</th>
+                        <th class="border-0" >Сумма</th>
+<!--                        <th class="border-0" >Point</th>-->
                     </tr>
                     </thead>
                     <tbody>
@@ -62,7 +65,7 @@
                         <td th:text="${item.firstName} + ' ' + ${item.lastName}">  </td>
                         <td th:text="${item.date}">  </td>
                         <td th:text="${item.invoiceAmount}">  </td>
-                        <td th:text="${item.amount}">  </td>
+<!--                        <td th:text="${item.amount}">  </td>-->
                     </tr>
                     </tbody>
                 </table>

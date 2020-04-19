@@ -5109,7 +5109,7 @@ Vertical Timeline - by CodyHouse.co
 -------------------------*/
 
 .dashboard-media-object .card-footer {
-    padding: 0px;
+    padding: 0;
 }
 
 .btn-account {
@@ -5119,8 +5119,8 @@ Vertical Timeline - by CodyHouse.co
     display: flex;
     margin: 0;
     border: 0;
-    -ms-flex-wrap: none;
-    flex-wrap: none;
+    /*-ms-flex-wrap: none;*/
+    /*flex-wrap: none;*/
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
@@ -5318,7 +5318,7 @@ Vertical Timeline - by CodyHouse.co
 .drag-handle,
 .drag-indicator {
     cursor: move;
-    cursor: -webkit-grab;
+    /*cursor: -webkit-grab;*/
     cursor: grab;
 }
 
@@ -5339,7 +5339,7 @@ Vertical Timeline - by CodyHouse.co
     margin: 0 .5em;
     height: 8px;
     width: 6px;
-    background-image: url(/images/drag-indicator.png);
+    /*background-image: url(/images/drag-indicator.png);*/
     -webkit-transform: translate3d(-.5em, 0, 0);
     transform: translate3d(-.5em, 0, 0);
     -webkit-user-select: none;
@@ -5973,10 +5973,7 @@ Vertical Timeline - by CodyHouse.co
 
 .input-search .input-group-btn .btn {
     padding: 5px 10px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 1px;
-    border-top-right-radius: 1px;
+    border-radius: 0 1px 1px 0;
 }
 
 .email-filters {
@@ -6000,7 +5997,7 @@ Vertical Timeline - by CodyHouse.co
 .btn-group,
 .btn-group-vertical {
     position: relative;
-    display: -webkit-inline-box;
+    /*display: -webkit-inline-box;*/
     display: -ms-inline-flexbox;
     display: inline-flex;
     vertical-align: middle;
@@ -6606,7 +6603,7 @@ Vertical Timeline - by CodyHouse.co
 }
 
 .chat-team-sidebar .tab-pane {
-    overflow-y: none;
+    /*overflow-y: none;*/
     -ms-overflow-style: none;
     height: 100%;
 }
@@ -6984,7 +6981,7 @@ Media Query
 
 /* ===================== FILE INPUT ===================== */
 .glyphicon {
-    margin-left: 10px
+    margin-left: 10px;
     position: relative;
     top: 1px;
     display: inline-block;

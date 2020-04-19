@@ -46,6 +46,10 @@ public class Organization {
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "category_id")
     private OrgCategory orgCategory;
+//
+//    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+//    @JoinColumn(name = "budget_id")
+//    private Budget budget;
     /**
      * Name
      */
