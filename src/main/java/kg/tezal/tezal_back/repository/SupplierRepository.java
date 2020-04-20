@@ -1,0 +1,7 @@
+package kg.tezal.tezal_back.repository;
+
+import kg.tezal.tezal_back.entity.Supplier;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SupplierRepository extends JpaRepository<Supplier, Long> {
+}

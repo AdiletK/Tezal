@@ -1,12 +1,12 @@
 package kg.tezal.tezal_back.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import kg.tezal.tezal_back.enums.OrderStatus;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -22,8 +22,8 @@ public class Order {
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "ordersStatus_id")
+    @Enumerated(EnumType.STRING)
+    @JoinColumn(name = "order_status")
     private OrderStatus ordersStatus;
 
     @ManyToOne

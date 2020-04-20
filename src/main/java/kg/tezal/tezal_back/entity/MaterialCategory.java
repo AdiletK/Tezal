@@ -1,10 +1,7 @@
 package kg.tezal.tezal_back.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -14,27 +11,27 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name = "orderStatus")
-@ToString
-@EqualsAndHashCode(of={"id"})
-public class OrderStatus implements Serializable {
+@Table(name = "category")
+public class MaterialCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     private Long id;
 
-    @Column(updatable = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @CreationTimestamp
-    @Column(updatable = false, nullable = false, name="create_date")
+    @Column(updatable = false, nullable = false, name = "create_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createDate;
 
     @UpdateTimestamp
-    @Column(name="update_date")
+    @Column(name = "update_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime updateDate;
 

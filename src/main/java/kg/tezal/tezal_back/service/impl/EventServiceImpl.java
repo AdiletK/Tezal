@@ -19,11 +19,14 @@ import java.util.List;
 
 @Service
 public class EventServiceImpl implements EventService {
-    @Autowired
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
 
-    @Autowired
-    private EventDao eventDao;
+    private final EventDao eventDao;
+
+    public EventServiceImpl(EventRepository eventRepository, EventDao eventDao) {
+        this.eventRepository = eventRepository;
+        this.eventDao = eventDao;
+    }
 
     public Event findById(Long id) {
         return eventRepository.findById(id).orElseThrow(() ->

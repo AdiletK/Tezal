@@ -98,6 +98,5 @@ public class OrgCategoryTagController {
         }
 //        return "redirect:/org_category/" + catId;
         return "redirect:/org_category/"+catId + "/tag/";
-
     }
 }
