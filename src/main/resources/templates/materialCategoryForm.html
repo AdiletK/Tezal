@@ -3,23 +3,23 @@
       layout:decorate="~{layout}" >
 <head>
     <meta charset="UTF-8">
-    <title data-th-text="${units==null} ? #{unitForm.label.header.title} : #{unitForm.label.add}"></title>
+    <title data-th-text="${categories==null} ? #{category.label.header.title} : #{category.label.add}"></title>
 </head>
 <body>
 <div layout:fragment="content">
 
     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="section-block" id="basicform">
-            <h3 class="section-title" th:text="${add} ? #{unitForm.label.add} : #{unitForm.label.update}"> </h3>
+            <h3 class="section-title" th:text="${add} ? #{category.label.add} : #{category.label.update}"> </h3>
             <p style="color:red;" th:text="${has_exception} ? ${exception_text} : ''"></p>
         </div>
         <div class="card" >
-            <h3 class="card-header font-bold text-dark" th:text="${add} ? #{unitForm.label.create} : ${unit.name}"></h3>
+            <h3 class="card-header font-bold text-dark" th:text="${add} ? #{category.label.create} : ${category.name}"></h3>
             <div class="card-body">
-                <form action="#" th:action="${add} ? @{create} : @{'/unit/update/' + ${unit.id} }"  th:object="${unit}" method="POST">
+                <form action="#" th:action="${add} ? @{create} : @{'/material_category/update/' + ${category.id} }"  th:object="${category}" method="POST">
                     <div class="form-group">
-                        <label for="name" class="text-dark font-bold" data-th-text="#{unitForm.label.name}"></label>
-                        <input  id="name" type="text" class="form-control" th:value="${tag} ? ${tag.name} : ' '" th:field="*{name}" maxlength="255" required>
+                        <label for="name" class="text-dark font-bold" data-th-text="#{category.label.name}"></label>
+                        <input  id="name" type="text" class="form-control" th:value="${category} ? ${category.name} : ' '" th:field="*{name}" maxlength="255" required>
 
                         <p th:if="${#fields.hasErrors('name')}" style="color:red;" th:errors="*{name}">Incorrect LP</p>
 
@@ -28,14 +28,14 @@
                                 type="submit" class="btn btn-success m-t-20" data-toggle="tooltip"
                                 data-placement="top" title="Tooltip on top">Create
                         </button>
-                        <a type="button" th:style="${add} ? 'visibility:hidden' : ''"  class="btn btn-danger m-t-20" data-toggle="modal" th:attr="data-target='#recordDeleteModal'+${unit.id}" data-th-text="#{button.label.delete}"></a>
+                        <a type="button" th:style="${add} ? 'visibility:hidden' : ''"  class="btn btn-danger m-t-20" data-toggle="modal" th:attr="data-target='#recordDeleteModal'+${category.id}" data-th-text="#{button.label.delete}"></a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 <!-- Modal -->
-<div class="modal fade" th:attr="id='recordDeleteModal'+${unit.id}" tabindex="-1" role="dialog" aria-labelledby="recordDeleteModalLabel" aria-hidden="true">
+<div class="modal fade" th:attr="id='recordDeleteModal'+${category.id}" tabindex="-1" role="dialog" aria-labelledby="recordDeleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -49,7 +49,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" data-th-text="#{label.no}"></button>
-                <form th:action="@{/unit/delete/{id}(id = ${unit.id})}" th:object="${unit}" th:method="${add} ? 'GET' : 'POST'">
+                <form th:action="@{/material_category/delete/{id}(id = ${category.id})}" th:object="${category}" method="POST">
                     <button type="submit" class="btn btn-primary" data-th-text="#{label.yes}"></button>
                 </form>
             </div>

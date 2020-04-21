@@ -2,7 +2,7 @@
 <html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout}" lang="en">
 <head>
-    <title th:text="${materialCategory} ? ${materialCategory.name} : #{org_categoryForm.label.header.title}"> </title>
+    <title th:text="${category} ? ${category.name} : #{org_categoryForm.label.header.title}"> </title>
 </head>
 
 <body>
@@ -15,9 +15,9 @@
             <p style="color:red;" th:text="${has_exception} ? ${exception_text} : ''"></p>
         </div>
         <div class="card">
-            <h3 class="card-header font-bold text-dark" th:text="${add} ? #{org_categoryForm.label.new_category} : ${materialCategory.name}"></h3>
+            <h3 class="card-header font-bold text-dark" th:text="${add} ? #{org_categoryForm.label.new_category} : ${category.name}"></h3>
             <div class="card-body">
-                <form action="#" enctype="multipart/form-data" th:action="${add} ? @{create} : @{/org_category/update/{id}(id = ${materialCategory.id})}"  th:object="${materialCategory}" method="POST">
+                <form action="#" enctype="multipart/form-data" th:action="${add} ? @{create} : @{/org_category/update/{id}(id = ${category.id})}"  th:object="${category}" method="POST">
                     <label class="text-dark font-bold col-form-label" data-th-text="#{org_category.label.image.logo}"></label>
                     <div class="form-group">
                         <div class="box">
@@ -29,7 +29,7 @@
                             </div>
                         </div>
                         <script th:inline="javascript">
-                            var image = /*[[${materialCategory.image}]]*/ null;
+                            var image = /*[[${category.image}]]*/ null;
                             if(image != null){
                                 var thumb = document.querySelector('.js--image-preview');
                                 thumb.style.backgroundImage = 'url(' + image + ')';
@@ -39,23 +39,23 @@
                     </div>
                     <div class="form-group">
                         <label for="name" class="text-dark font-bold" data-th-text="#{org_categoryForm.label.name}"></label>
-                        <input id="name" type="text" class="form-control" th:value="${materialCategory} ? ${materialCategory.name} : ' '" th:field="*{name}" minlength="5" maxlength="255" required>
+                        <input id="name" type="text" class="form-control" th:value="${category} ? ${category.name} : ' '" th:field="*{name}" minlength="5" maxlength="255" required>
 
                         <p th:if="${#fields.hasErrors('name')}" style="color:red;" th:errors="*{name}">Incorrect LP</p>
 
                         <label for="description" class="text-dark font-bold" data-th-text="#{org_categoryForm.label.desc}"></label>
-                        <textarea id="description" class="form-control" th:text=" ${materialCategory} ? ${materialCategory.description} : '' " th:field="*{description}" minlength="50" maxlength="255" required></textarea>
+                        <textarea id="description" class="form-control" th:text=" ${category} ? ${category.description} : '' " th:field="*{description}" minlength="50" maxlength="255" required></textarea>
                         <p th:if="${#fields.hasErrors('description')}" style="color: red;"
                            th:errors="*{description}">Incorrect LP</p>
                         <!--                            <div class="col-md-1 float-right">-->
-                        <!--                                <a th:href = "'/org_category/'+${materialCategory.id}+ '/tag/form'" class="btn btn-success m-b-10 m-l-10 m-t-10"> <i class="fa fa-plus"></i></a>-->
+                        <!--                                <a th:href = "'/org_category/'+${category.id}+ '/tag/form'" class="btn btn-success m-b-10 m-l-10 m-t-10"> <i class="fa fa-plus"></i></a>-->
                         <!--                            </div>-->
                         <!--                            <label for="tags" class="text-dark font-bold" data-th-text="#{org_categoryForm.label.tags}"></label>-->
                         <!--                            <div id="tags" class="font-bold">-->
                         <!--                                <th:block th:with="colCount=${5}"  >-->
                         <!--                                    <div th:each="row : ${#numbers.sequence(0, tags.size(), colCount)}"  class="row">-->
                         <!--                                        <div th:each="col : ${#numbers.sequence(0, colCount - 1)}" th:if="${row + col &lt; tags.size()}"  class="span3">-->
-                        <!--                                            <a th:href="'/org_category/'+${materialCategory.id}+'/tag/'+${tags.get(row + col).id}"  data-th-text="${tags.get(row + col).name} + ', '" ></a>-->
+                        <!--                                            <a th:href="'/org_category/'+${category.id}+'/tag/'+${tags.get(row + col).id}"  data-th-text="${tags.get(row + col).name} + ', '" ></a>-->
                         <!--                                        </div>-->
                         <!--                                    </div>-->
                         <!--                                </th:block>-->
@@ -69,11 +69,11 @@
                             data-placement="top" title="Tooltip on top">Create
                     </button>
                     <a type="button" th:style="${add} ? 'visibility:hidden' : ''"  class="btn btn-danger" data-toggle="modal"
-                       th:attr="data-target='#recordDeleteModal'+${materialCategory.id}" data-th-text="#{button.label.delete}"></a>
+                       th:attr="data-target='#recordDeleteModal'+${category.id}" data-th-text="#{button.label.delete}"></a>
                 </form>
 
                 <!-- Modal -->
-                <div class="modal fade" th:attr="id='recordDeleteModal'+${materialCategory.id}" tabindex="-1" role="dialog" aria-labelledby="recordDeleteModalLabel" aria-hidden="true">
+                <div class="modal fade" th:attr="id='recordDeleteModal'+${category.id}" tabindex="-1" role="dialog" aria-labelledby="recordDeleteModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -87,7 +87,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal" data-th-text="#{label.no}"></button>
-                                <form th:action="${add} ? @{/org_category/list} : @{/org_category/delete/{id}(id = ${materialCategory.id})}" th:object="${materialCategory}" th:method="${add} ? 'GET' : 'POST'">
+                                <form th:action="${add} ? @{/org_category/list} : @{/org_category/delete/{id}(id = ${category.id})}" th:object="${category}" th:method="${add} ? 'GET' : 'POST'">
                                     <button type="submit" class="btn btn-primary" data-th-text="#{label.yes}"></button>
                                 </form>
                             </div>

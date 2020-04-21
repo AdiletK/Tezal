@@ -1,0 +1,101 @@
+<!doctype html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="${material} ? ${material.name} : #{material.label.create}"> </title>
+</head>
+
+<body>
+
+<div layout:fragment="content">
+    <!-- ============================================================== -->
+    <!-- profile -->
+    <!-- ============================================================== -->
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <h3 class="section-title" th:text="${add} ? #{material.label.create} : #{material.label.update}"></h3>
+        <p th:text="${add} ? #{material.label.create_desc} : #{material.label.update_desc}"></p>
+        <div class="card">
+            <h3 class="card-header font-bold text-dark" th:text="${add} ? #{material.label.new_org} : ${material.name}"></h3>
+            <div class="card-body">
+                <form action="#" th:action="${add} ? @{create} : @{/product/update/{id}(id = ${material.id})}"  th:object="${material}" method="POST">
+                    <div class="form-group">
+                        <label class="text-dark font-bold col-form-label" for="inputText1" data-th-text="#{material.label.mat_name}"></label>
+                        <input  th:value="${add} ? '' : ${material.name} " th:field="*{name}" id="inputText1" type="text" class="form-control">
+                        <p th:if="${#fields.hasErrors('name')}" style="color: red;" th:errors="*{name}">Incorrect LP</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-dark font-bold col-form-label" for="exampleFormControlTextarea1" data-th-text="#{material.label.org_desc}"></label>
+                        <textarea  th:text="${material} ? ${material.description} : ''" th:field="*{description} "class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <p th:if="${#fields.hasErrors('description')}" style="color: red;" th:errors="*{description}">Incorrect LP</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-dark font-bold col-form-label" for="input-select" data-th-text="#{material.label.category}"></label>
+                        <select th:field="*{materialCategoryId}" class="form-control" id="input-select" >
+                            <option th:each="orgCategory : ${categories}" th:value="${orgCategory.id}" th:text="${orgCategory.name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-dark font-bold col-form-label" for="volume" data-th-text="#{material.label.volume}"></label>
+                        <input  th:value="${add} ? '' : ${material.volume} " th:field="*{volume}" id="volume" type="number" step="0.0001" class="form-control">
+                        <p th:if="${#fields.hasErrors('volume')}" style="color: red;" th:errors="*{volume}">Incorrect LP</p>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-dark font-bold col-form-label" for="input-select-unit" data-th-text="#{material.label.unit}"></label>
+                        <select th:field="*{unitId}" class="form-control" id="input-select-unit" >
+                            <option th:each="unit : ${units}" th:value="${unit.id}" th:text="${unit.name}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="text-dark font-bold col-form-label" for="amountInBlock" data-th-text="#{material.label.amount}"></label>
+                        <input  th:value="${add} ? '' : ${material.amountInBlock} " th:field="*{amountInBlock}" id="amountInBlock" type="number" class="form-control">
+                        <p th:if="${#fields.hasErrors('amountInBlock')}" style="color: red;" th:errors="*{amountInBlock}">Incorrect LP</p>
+                    </div>
+
+                    <div>
+                        <button th:text="${add} ? #{button.label.create}: #{button.label.update} "
+                                th:class="${add} ? 'btn btn-success': 'btn btn-info' "
+                                type="submit" class="btn btn-success" data-toggle="tooltip"
+                                data-placement="top" title="Tooltip on top" id="create_org_button">Create
+                        </button>
+                        <a th:if="${!add}" type="button" style="color: white;" class="btn btn-danger" data-toggle="modal" th:attr="data-target='#recordDeleteModal'+${material.id}" data-th-text="#{button.label.delete}"></a>
+
+                    </div>
+
+                </form>
+                <!-- Modal -->
+                <div class="modal fade" th:attr="id='recordDeleteModal'+${material.id}" tabindex="-1" role="dialog" aria-labelledby="recordDeleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="recordDeleteModalLabel" data-th-text="#{button.label.delete_message}"></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <label data-th-text="#{org_category.label.confirm_to_delete}"></label>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" data-th-text="#{label.no}"></button>
+                                <form th:action="@{/product/delete/{id}(id = ${material.id})}" th:object="${material}" method="post">
+                                    <button type="submit" class="btn btn-primary" data-th-text="#{label.yes}"></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal end -->
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- end profile var  -->
+    <!--  -->
+    <!-- ============================================================== -->
+</div>
+</body>
+
+</html>

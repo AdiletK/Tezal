@@ -1,7 +1,7 @@
 package kg.tezal.tezal_back.controller;
 
-import kg.tezal.tezal_back.entity.Unit;
-import kg.tezal.tezal_back.service.UnitService;
+import kg.tezal.tezal_back.entity.Supplier;
+import kg.tezal.tezal_back.service.SupplierService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,73 +14,73 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("unit")
-public class UnitController {
-    private final UnitService unitService;
+@RequestMapping("supplier")
+public class SupplierController {
+    private final SupplierService supplierService;
 
-    public UnitController(UnitService unitService) {
-        this.unitService = unitService;
+    public SupplierController(SupplierService supplierService) {
+        this.supplierService = supplierService;
     }
 
     @GetMapping(value = "/list")
     public String getUnitList(
             @PageableDefault(7) Pageable pageable,
             Model model) {
-        Page<Unit> units;
-        units = unitService.findAll(pageable);
-        model.addAttribute("units", units);
-        return "unitList";
+        Page<Supplier> suppliers;
+        suppliers = supplierService.findAll(pageable);
+        model.addAttribute("suppliers", suppliers);
+        return "supplierList";
     }
 
     @GetMapping(value = "/{id}")
     public String unitGet(@PathVariable(required = false) Long id, Model model) {
-        Unit unit = unitService.findById(id);
-        model.addAttribute("unit", unit);
+        Supplier supplier = supplierService.findById(id);
+        model.addAttribute("supplier", supplier);
         model.addAttribute("add", false);
-        return "unitForm";
+        return "supplierForm";
     }
 
     @PostMapping("/update/{id}")
     public String updateUnit(@PathVariable("id") Long id,
-                                       @Valid @ModelAttribute("unit") Unit unit,
+                                       @Valid @ModelAttribute("supplier") Supplier supplier,
                                        BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute(unit);
+            model.addAttribute(supplier);
             model.addAttribute("add", false);
             return "unitForm";
         }
-        unitService.putById(id, unit);
-        return "redirect:/unit/list";
+        supplierService.putById(id, supplier);
+        return "redirect:/supplier/list";
     }
 
     @GetMapping(value = "/form")
     public String unitForm(Model model) {
-        Unit unit = new Unit();
-        model.addAttribute("unit", unit);
+        Supplier supplier = new Supplier();
+        model.addAttribute("supplier", supplier);
         model.addAttribute("add", true);
-        return "unitForm";
+        return "supplierForm";
     }
 
     @PostMapping(value = "/create")
-    public String createUnit(@Valid @ModelAttribute("unit") Unit unit,
+    public String createUnit(@Valid @ModelAttribute("supplier") Supplier supplier,
                             BindingResult result, Model model) {
         if (result.hasErrors()) {
-            model.addAttribute(unit);
+            model.addAttribute(supplier);
             model.addAttribute("add", true);
-            return "unitForm";
+            return "supplierForm";
         }
-        unitService.create(unit);
-        return "redirect:/unit/list";
+        supplierService.create(supplier);
+        return "redirect:/supplier/list";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteOrgCategory(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
         try {
-            unitService.deleteById(id);
+            supplierService.deleteById(id);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("has_exception", true);
-            return "unitForm";
+            return "supplierForm";
         }
-        return "redirect:/unit/list";
+        return "redirect:/supplier/list";
     }
 }

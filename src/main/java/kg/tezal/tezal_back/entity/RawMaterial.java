@@ -1,7 +1,10 @@
 package kg.tezal.tezal_back.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,15 +20,12 @@ import java.time.LocalDateTime;
 public class RawMaterial {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(updatable = false, nullable = false)
+    @SequenceGenerator(name = "rawMaterial_seq", sequenceName = "rawMaterial_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rawMaterial_seq")
     private Long id;
 
     @Column(nullable = false)
     private String name;
-
-    @Column(updatable = false, insertable = false, nullable = false, name = "unit_id")
-    private Long unitId;
 
     @ManyToOne
     @JoinColumn(name = "unit_id")
@@ -39,9 +39,6 @@ public class RawMaterial {
 
     @Column(nullable = false)
     private int amountInBlock;
-
-    @Column(updatable = false, insertable = false, nullable = false, name = "subcategory_id")
-    private Long subcategoryId;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

@@ -122,6 +122,18 @@ INSERT INTO org_category_tag (org_category_id, tag_id) VALUES (1, 3);
 INSERT INTO org_category_tag (org_category_id, tag_id) VALUES (2, 1);
 INSERT INTO org_category_tag (org_category_id, tag_id) VALUES (2, 2);
 
-INSERT INTO unit(id, create_date, name, update_date) VALUES (1, '10-01-20','Пряности','10-01-20');
-INSERT INTO unit(id, create_date, name, update_date) VALUES (2, '10-01-20','Продукты','10-01-20');
-INSERT INTO unit(id, create_date, name, update_date) VALUES (3, '10-01-20','Мыломоющие','10-01-20');
+INSERT INTO unit(id, create_date, name, update_date) VALUES ((SELECT nextval('unit_seq')), '10-01-20','шт','10-01-20');
+INSERT INTO unit(id, create_date, name, update_date) VALUES ((SELECT nextval('unit_seq')), '10-01-20','кг','10-01-20');
+INSERT INTO unit(id, create_date, name, update_date) VALUES ((SELECT nextval('unit_seq')), '10-01-20','гр','10-01-20');
+
+INSERT INTO category(id, create_date, name, update_date) VALUES ((SELECT nextval('category_seq')), '10-01-20','Пряности','10-01-20');
+INSERT INTO category(id, create_date, name, update_date) VALUES ((SELECT nextval('category_seq')), '10-01-20','Продукты','10-01-20');
+INSERT INTO category(id, create_date, name, update_date) VALUES ((SELECT nextval('category_seq')), '10-01-20','Мыломоющие','10-01-20');
+
+INSERT INTO supplier(id, create_date, name, update_date) VALUES ((SELECT nextval('supplier_seq')), '10-01-20','Coca-cola','10-01-20');
+INSERT INTO supplier(id, create_date, name, update_date) VALUES ((SELECT nextval('supplier_seq')), '10-01-20','Colgate','10-01-20');
+INSERT INTO supplier(id, create_date, name, update_date) VALUES ((SELECT nextval('supplier_seq')), '10-01-20','Umut KG','10-01-20');
+
+INSERT INTO raw_material(id, amount_in_block, create_date, description, name, unit_id, update_date, volume, category_id)  VALUES ((SELECT nextval('raw_material_seq')), 10, '10-10-20', 'This product', 'Cola', 1, '10-10-20', 20, 1);
+INSERT INTO raw_material(id, amount_in_block, create_date, description, name, unit_id, update_date, volume, category_id)  VALUES ((SELECT nextval('raw_material_seq')), 10, '10-10-20', 'This product', 'Pepsi', 2, '10-10-20', 20, 2);
+INSERT INTO raw_material(id, amount_in_block, create_date, description, name, unit_id, update_date, volume, category_id)  VALUES ((SELECT nextval('raw_material_seq')), 10, '10-10-20', 'This product', 'Fanta', 3, '10-10-20', 20, 3);

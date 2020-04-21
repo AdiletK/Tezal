@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UnitServiceImpl implements UnitService {
     private final UnitRepository unitRepository;
@@ -48,5 +50,10 @@ public class UnitServiceImpl implements UnitService {
     @Override
     public Page<Unit> findAll(Pageable pageable) {
         return unitRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Unit> findAll() {
+        return unitRepository.findAll();
     }
 }

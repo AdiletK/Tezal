@@ -4,6 +4,8 @@ import kg.tezal.tezal_back.entity.Unit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface UnitService {
     Unit findById(Long id);
 
@@ -14,4 +16,6 @@ public interface UnitService {
     Unit putById(Long id, Unit unit);
 
     Page<Unit> findAll(Pageable pageable);
+
+    List<Unit> findAll();
 }
