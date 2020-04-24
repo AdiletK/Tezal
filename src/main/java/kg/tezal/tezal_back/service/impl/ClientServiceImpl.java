@@ -2,12 +2,12 @@ package kg.tezal.tezal_back.service.impl;
 
 import kg.tezal.tezal_back.dao.ClientDao;
 import kg.tezal.tezal_back.entity.Client;
+import kg.tezal.tezal_back.model.*;
 import kg.tezal.tezal_back.repository.ClientRepository;
 import kg.tezal.tezal_back.service.ClientPreferenceValueService;
 import kg.tezal.tezal_back.service.ClientService;
 import kg.tezal.tezal_back.utils.RecordNotFoundException;
 import kg.tezal.tezal_back.utils.UtilBase64Image;
-import kg.tezal.tezal_back.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,6 +41,10 @@ public class ClientServiceImpl implements ClientService {
 
     public List<ClientShortModel> getAllClientByOrgId(Long id, String search) {
         return clientDao.getClientsByOrgId(id, search);
+    }
+
+    public List<ClientShortModel> getAllClients() {
+        return clientRepository.getAllClients();
     }
 
     public Client create(Client client) {

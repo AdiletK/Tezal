@@ -64,7 +64,10 @@
                                     <a class="nav-link" th:href="@{'/organization/forOrgAdmin'}" data-th-text="#{leftMenu.label.profile}"><span class="badge badge-secondary" data-th-text="#{leftMenu.label.new}"></span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" th:href="@{'/'}" data-th-text="#{label.purchases}"></a>
+                                    <a class="nav-link" th:href="@{'/organization/purchase/forOrgAdmin'}" data-th-text="#{label.purchases}"></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{'/organization/order/forOrgAdmin'}" data-th-text="#{label.orders}"></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" th:href="@{'/'}" data-th-text="#{label.sales}"></a>
@@ -73,10 +76,10 @@
 <!--                                    &lt;!&ndash;Events&ndash;&gt;-->
 <!--                                    <a class="nav-link" th:href="@{'/organization/event/list/forOrgAdmin'}" data-th-text="#{leftMenu.label.events}"></a>-->
 <!--                                </li>-->
-                                <li class="nav-item">
-                                    <!--History-->
-                                    <a class="nav-link" th:href="@{'/'}" data-th-text="#{leftMenu.label.products}"></a>
-                                </li>
+<!--                                <li class="nav-item">-->
+<!--                                    &lt;!&ndash;History&ndash;&gt;-->
+<!--                                    <a class="nav-link" th:href="@{'/'}" data-th-text="#{leftMenu.label.products}"></a>-->
+<!--                                </li>-->
                                 <li class="nav-item">
                                     <!--Clients-->
                                     <a class="nav-link" th:href="@{'/client/list/forOrgAdmin'}" data-th-text="#{leftMenu.label.clients}"></a>

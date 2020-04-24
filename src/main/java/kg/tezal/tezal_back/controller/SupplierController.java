@@ -45,6 +45,7 @@ public class SupplierController {
                                        @Valid @ModelAttribute("supplier") Supplier supplier,
                                        BindingResult result, Model model) {
         if (result.hasErrors()) {
+            supplier.setId(id);
             model.addAttribute(supplier);
             model.addAttribute("add", false);
             return "unitForm";

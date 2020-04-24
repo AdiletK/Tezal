@@ -29,8 +29,8 @@ public class ClientRestController {
     }
 
     @GetMapping("/all")
-    public List<Client> getAll() {
-        return clientService.findAll();
+    public List<ClientShortModel> getAll() {
+        return clientService.getAllClients();
     }
 
     @GetMapping("/allByOrgId/{id}")

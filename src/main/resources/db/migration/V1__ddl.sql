@@ -38,7 +38,7 @@ create table client_preference_value (id int8 not null, value int4, client_id in
 create table event (id int8 not null, created_date timestamp, date_from timestamp, date_to timestamp, description varchar(255), image text, name varchar(255), organization_id int8 not null, primary key (id));
 create table filial (id int8 not null, address varchar(255), average_rate float8, created_date timestamp, description varchar(255), image text, latitude float8, longitude float8, name varchar(255), status boolean default true, organization_id int8 not null, primary key (id));
 create table filial_rate (id int8 not null, comment varchar(255), created_date timestamp, rate float8, client_id int8 not null, filial_id int8 not null, organization_id int8 not null, primary key (id));
-create table orders (id int8 not null, create_date timestamp not null, deadline_date timestamp not null, orders_status varchar(255), update_date timestamp, client_id int8, organization_id int8, users_id int8, primary key (id));
+create table orders (id int8 not null, create_date timestamp not null, deadline_date timestamp, orders_status varchar(255), update_date timestamp, client_id int8, organization_id int8, users_id int8, primary key (id));
 create table orders_product (id int8 not null, create_date timestamp not null, number_of float8, sum_of float8, update_date timestamp, orders_id int8, raw_material_id int8, primary key (id));
 create table org_bonus (id int8 not null, created_date timestamp, deleted_date timestamp, status boolean default true, valid_from timestamp, valid_to timestamp, validity int4, org_bonus_type_id int8 not null, organization_id int8 not null, primary key (id));
 create table org_bonus_type (id int8 not null, description varchar(255), name varchar(255), value_type varchar(255), primary key (id));
@@ -49,7 +49,7 @@ create table org_image (id int8 not null, image text not null, organization_id i
 create table org_preference_category (id int8 not null, organization_id int8 not null, preference_category_id int8 not null, primary key (id));
 create table organization (id int8 not null, created_date timestamp, description varchar(255), image text, name varchar(255), status boolean default true, category_id int8 not null, primary key (id));
 create table preference_category (id int8 not null, name varchar(255), type varchar(255), parent_id int8, primary key (id));
-create table purchase (id int8 not null, bar_code varchar(255) not null, count int4 not null, create_date timestamp not null, price_for_one float4 not null, publisher varchar(255) not null, summ float4 not null, update_date timestamp, organization_id int8, rate_id int8, raw_material_id int8, primary key (id));
+create table purchase (id int8 not null, bar_code varchar(255) not null, count int4 not null, create_date timestamp not null, price_for_one float4 not null, publisher varchar(255) not null, summ float4 not null, update_date timestamp, organization_id int8, supplier_id int8, raw_material_id int8, primary key (id));
 create table rate (id int8 not null, create_date timestamp not null, quantity_in_stock float4 not null, retail_price float4 not null, update_date timestamp, wholesale_price float4 not null, organization_id int8, raw_material_id int8, primary key (id));
 create table raw_material (id int8 not null, amount_in_block int4 not null, create_date timestamp not null, description varchar(255) not null, name varchar(255) not null, unit_id int8 not null, update_date timestamp, volume float4 not null, category_id int8, primary key (id));
 create table role (id int8 not null, description varchar(255), name varchar(255), primary key (id));
@@ -92,7 +92,7 @@ alter table org_preference_category add constraint FK3ioe6em34siocwplvumnpj6jd f
 alter table organization add constraint FKga36rgp1bkw38qy2uplshwhql foreign key (category_id) references org_category;
 alter table preference_category add constraint FKtdv8rj2d2yvqqjmmu715ajc6s foreign key (parent_id) references preference_category;
 alter table purchase add constraint FKmaf38iplt9xo2kpdaqb4x37l8 foreign key (organization_id) references organization;
-alter table purchase add constraint FKpuc87sx1386rn4yhq0hcuxwfr foreign key (rate_id) references rate;
+alter table purchase add constraint FKpuc87sx1386rn4yhq0hcuxwfr foreign key (supplier_id) references supplier       ;
 alter table purchase add constraint FKa7ry1qf6q63mb8lp7dsa6a8mo foreign key (raw_material_id) references raw_material;
 alter table rate add constraint FKkn6pf2j86ptiljhdfqspnvr4f foreign key (organization_id) references organization;
 alter table rate add constraint FKb3ox4604xblltp0a0cqpocy45 foreign key (raw_material_id) references raw_material;

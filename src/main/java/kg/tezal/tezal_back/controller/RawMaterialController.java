@@ -61,6 +61,7 @@ public class RawMaterialController {
                                      @Valid @ModelAttribute("material") RawMaterialModel materialModel,
                                      BindingResult result, Model model) {
         if (result.hasErrors()) {
+            materialModel.setId(id);
             model.addAttribute(materialModel);
             model.addAttribute("categories", loadCategories());
             model.addAttribute("units", loadUnits());

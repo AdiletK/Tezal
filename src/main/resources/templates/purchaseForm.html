@@ -1,0 +1,106 @@
+<!doctype html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{purchase.label.create}"> </title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="section-block" id="basicform" >
+            <h3 class="section-title" th:text="${add} ? #{purchase.label.create} : #{purchase.label.update}"></h3>
+            <p th:text="${add} ? #{purchase.label.create_desc} : #{purchase.label.update_desc}"></p>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <form action="#" th:action="${add} ? @{create} : '/organization/' + ${orgId} + '/purchase/update/' + ${purchase.id}"  th:object="${purchase}" method="POST">
+                    <div class="form-group">
+                        <div th:if="${!add}" class="form-group" >
+                            <label class="text-dark font-bold col-form-label col-form-label" for="input-select_org" data-th-text="#{label.org_name}"></label>
+                            <select th:field="*{organizationId}" class="form-control" id="input-select_org" >
+                                <option th:value="${purchase.organizationId}" th:text="${purchase.organizationName}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-dark font-bold col-form-label col-form-label" for="input-select" data-th-text="#{rate.label.product}"></label>
+                            <select th:field="*{rawMaterialId}" class="form-control" id="input-select" >
+                                <option th:each="material : ${materials}" th:value="${material.id}" th:text="${material.name}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-dark font-bold col-form-label" for="count_input" data-th-text="#{purchase.label.count}"></label>
+                            <input th:value="${purchase} ? ${purchase.count} : '0' " th:field="*{count}" id="count_input" type="number" step="0.00001" class="form-control" required min="0">
+                            <p th:if="${#fields.hasErrors('count')}" style="color: red;" th:errors="*{count}">Incorrect LP</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-dark font-bold col-form-label" for="price" data-th-text="#{purchase.label.price}"></label>
+                            <input th:value="${purchase} ? ${purchase.priceForOne} : '0' " th:field="*{priceForOne}" id="price" type="number" step="0.00001" class="form-control" required min="0">
+                            <p th:if="${#fields.hasErrors('priceForOne')}" style="color: red;" th:errors="*{priceForOne}">Incorrect LP</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-dark font-bold col-form-label" for="barCode" data-th-text="#{purchase.label.barcode}"></label>
+                            <input th:value="${purchase} ? ${purchase.barCode} : '' " th:field="*{barCode}" id="barCode" type="number" step="0.00001" class="form-control">
+                            <p th:if="${#fields.hasErrors('barCode')}" style="color: red;" th:errors="*{barCode}">Incorrect LP</p>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-dark font-bold col-form-label" for="sum" data-th-text="#{purchase.label.sum}"></label>
+                            <input th:value="${purchase} ? ${purchase.summ} : '0' " th:field="*{summ}" id="sum" type="number" step="0.00001" class="form-control" required min="0">
+                            <p th:if="${#fields.hasErrors('summ')}" style="color: red;" th:errors="*{summ}">Incorrect LP</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="text-dark font-bold col-form-label col-form-label" for="input-select-supplier" data-th-text="#{supplierForm.label.name}"></label>
+                            <select th:field="*{supplierId}" class="form-control" id="input-select-supplier" >
+                                <option th:each="supplier : ${suppliers}" th:value="${supplier.id}" th:text="${supplier.name}"></option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="text-dark font-bold col-form-label" for="publisher" data-th-text="#{purchase.label.publisher}"></label>
+                            <input th:value="${purchase} ? ${purchase.publisher} : '' " th:field="*{publisher}" id="publisher" type="text" class="form-control">
+                            <p th:if="${#fields.hasErrors('publisher')}" style="color: red;" th:errors="*{publisher}">Incorrect LP</p>
+                        </div>
+                    <div>
+                        <button th:text=" ${add} ? #{button.label.create} : #{button.label.update}"
+                                th:class="${'Create'} ? 'btn btn-info' : 'btn btn-success' "
+                                type="submit" class="btn btn-success" data-toggle="tooltip"
+                                data-placement="top" title="Tooltip on top">Create
+                        </button>
+
+                        <a th:if="${!add}" type="button" style="color: white;" class="btn btn-danger" data-toggle="modal" data-target="#delete_modal " data-th-text="#{button.label.delete}"></a>
+
+                        <!-- Modal -->
+                        <div th:if="${!add}" class="modal fade" tabindex="-1" id="delete_modal" role="dialog" aria-labelledby="recordDeleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="recordDeleteModalLabel" data-th-text="#{button.label.delete_message}"></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label data-th-text="#{label.confirm_to_delete}"></label>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-th-text="#{label.no}"></button>
+                                        <a class="btn btn-danger" th:href="@{'/organization/' + ${orgId}  + '/purchase/delete/' + ${purchase.id}}" data-th-text="#{label.yes}"></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+
+    </div>
+    <!-- ============================================================== -->
+    <!-- end profile -->
+    <!-- ============================================================== -->
+</div>
+</body>
+</html>

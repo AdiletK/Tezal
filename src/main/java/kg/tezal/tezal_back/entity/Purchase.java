@@ -48,8 +48,8 @@ public class Purchase {
     private Organization organization;
 
     @ManyToOne
-    @JoinColumn(name = "rate_id")
-    private Rate rate;
+    @JoinColumn(name = "supplier_id")
+    private Supplier supplier;
 
     @CreationTimestamp
     @Column(updatable = false, nullable = false, name = "create_date")

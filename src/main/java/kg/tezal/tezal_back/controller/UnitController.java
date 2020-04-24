@@ -45,6 +45,7 @@ public class UnitController {
                                        @Valid @ModelAttribute("unit") Unit unit,
                                        BindingResult result, Model model) {
         if (result.hasErrors()) {
+            unit.setId(id);
             model.addAttribute(unit);
             model.addAttribute("add", false);
             return "unitForm";

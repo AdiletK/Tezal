@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "orders_product")
-public class Order_Material {
+public class OrderMaterial {
 
     @Id
     @SequenceGenerator(name = "order_product_seq", sequenceName = "order_product_seq", allocationSize = 1)

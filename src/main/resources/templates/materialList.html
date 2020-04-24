@@ -57,21 +57,18 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-start">
                     <li th:if="${materials.hasPrevious()}" class="page-item" >
-                        <span th:if="${searchResult != null}"><a class="page-link" th:href="'/product/list?search='+${searchResult}+'&page='+${materials.number-1}" tabindex="-1" ><i class="fa fa-chevron-left"></i></a></span>
-                        <span th:unless="${searchResult != null}" ><a class="page-link" th:href="@{'/product/list'(page=${materials.number-1})}" tabindex="-1" ><i class="fa fa-chevron-left"></i></a></span>
+                        <a class="page-link" th:href="'/product/list?search='+${searchResult}+'&page='+${materials.number-1}" tabindex="-1" ><i class="fa fa-chevron-left"></i></a>
                     </li>
                     <th:block th:each="i: ${#numbers.sequence(0, materials.totalPages - 1)}">
                         <li class="page-item active" th:if="${materials.number == i}" >
-                            <span class="page-link">[[${i}+1]]</span>
+                            <span class="page-link">[[${i}+1]]
                         </li>
                         <li th:unless="${materials.number == i}">
-                            <span th:if="${searchResult != null}"><a class="page-link" th:href="'/product/list?search='+${searchResult}+'&page='+${i}" tabindex="-1">[[${i}+1]]</a></span>
-                            <span th:unless="${searchResult != null}" ><a class="page-link" th:href="@{'/product/list'(page=${i})}" tabindex="-1">[[${i}+1]]</a></span>
+                            <a class="page-link" th:href="'/product/list?search='+${searchResult}+'&page='+${i}" tabindex="-1">[[${i}+1]]</a>
                         </li>
                     </th:block>
                     <li class="page-item" th:if="${materials.hasNext()}">
-                        <span th:if="${searchResult != null}"><a class="page-link" th:href="@{'/product/list?search='+${searchResult}+'&page='+${materials.number+1}}" tabindex="-1" ><i class="fa fa-chevron-right"></i></a></span>
-                        <span th:unless="${searchResult != null}"><a class="page-link" th:href="@{'/product/list'(page=${materials.number+1})}" ><i class="fa fa-chevron-right"></i></a></span>
+                        <a class="page-link" th:href="@{'/product/list?search='+${searchResult}+'&page='+${materials.number+1}}" tabindex="-1" ><i class="fa fa-chevron-right"></i></a>
                     </li>
                 </ul>
             </nav>

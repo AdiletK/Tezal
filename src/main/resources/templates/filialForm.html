@@ -18,7 +18,7 @@
         <div class="card">
 <!--            <h3 class="card-header font-bold text-dark" th:text="${filial} ? ${filial.organization.name} : ''">Organization Name</h3>-->
             <div class="card-body">
-                <form action="#" th:action="${add} ? @{create} : '/organization/' + ${orgId} + '/filial/update/' + ${filial.id}"  th:object="${filial}" method="POST">
+                <form action="#" enctype="multipart/form-data" th:action="${add} ? @{create} : '/organization/' + ${orgId} + '/filial/update/' + ${filial.id}"  th:object="${filial}" method="POST">
                     <label class="text-dark font-bold col-form-label" data-th-text="#{filialForm.label.image.logo}"></label>
                     <div class="form-group">
                         <div class="box">

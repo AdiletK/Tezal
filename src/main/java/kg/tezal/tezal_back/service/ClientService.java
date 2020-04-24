@@ -15,6 +15,7 @@ public interface ClientService {
     Page<ClientShortModel> getAllClientByPagination(Pageable pageable);
 
     List<ClientShortModel> getAllClientByOrgId(Long id, String search);
+    List<ClientShortModel> getAllClients();
 
     Client create(Client client);
 

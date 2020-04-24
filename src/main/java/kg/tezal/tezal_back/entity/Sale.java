@@ -30,15 +30,9 @@ public class Sale {
     @Column(nullable = false)
     private Float summ;
 
-    @Column(updatable = false, insertable = false, nullable = false, name = "rate_id")
-    private Long rateId;
-
     @ManyToOne
     @JoinColumn(name = "rate_id")
     private Rate rate;
-
-    @Column(updatable = false, insertable = false, nullable = false, name = "orders_id")
-    private Long ordersId;
 
     @ManyToOne
     @JoinColumn(name = "orders_id")

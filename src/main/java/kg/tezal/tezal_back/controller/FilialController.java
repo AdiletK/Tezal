@@ -92,6 +92,7 @@ public class FilialController {
         if (bindingResult.hasErrors()){
             filial.setId(filId);
             model.addAttribute(filial);
+            model.addAttribute("add", false);
             return "filialForm";
         }
         filial.setOrgId(organizationRestController.getOrganizationById(orgId).getId());
