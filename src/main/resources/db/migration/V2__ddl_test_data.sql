@@ -137,3 +137,36 @@ INSERT INTO supplier(id, create_date, name, update_date) VALUES ((SELECT nextval
 INSERT INTO raw_material(id, amount_in_block, create_date, description, name, unit_id, update_date, volume, category_id)  VALUES ((SELECT nextval('raw_material_seq')), 10, '10-10-20', 'This product', 'Cola', 1, '10-10-20', 20, 1);
 INSERT INTO raw_material(id, amount_in_block, create_date, description, name, unit_id, update_date, volume, category_id)  VALUES ((SELECT nextval('raw_material_seq')), 10, '10-10-20', 'This product', 'Pepsi', 2, '10-10-20', 20, 2);
 INSERT INTO raw_material(id, amount_in_block, create_date, description, name, unit_id, update_date, volume, category_id)  VALUES ((SELECT nextval('raw_material_seq')), 10, '10-10-20', 'This product', 'Fanta', 3, '10-10-20', 20, 3);
+
+INSERT INTO orders(id, create_date, deadline_date, orders_status, update_date, client_id, organization_id, users_id) VALUES ((SELECT nextval('orders_seq')),'10-10-20', '10-11-20', 'AWAITING', '10-10-20',1,1,3);
+
+INSERT INTO orders(id, create_date, deadline_date, orders_status, update_date, client_id, organization_id, users_id) VALUES ((SELECT nextval('orders_seq')),'10-10-20', '10-11-20', 'ACCEPT', '10-10-20',1,1,3);
+
+INSERT INTO orders(id, create_date, deadline_date, orders_status, update_date, client_id, organization_id, users_id) VALUES ((SELECT nextval('orders_seq')),'10-10-20', '10-11-20', 'READY', '10-10-20',1,1,3);
+
+INSERT INTO orders_product(id, create_date, number_of, sum_of, update_date, orders_id, raw_material_id)
+VALUES ((SELECT nextval('order_product_seq')), '10-10-20', 10, 100,'10-10-20',1,1);
+
+INSERT INTO orders_product(id, create_date, number_of, sum_of, update_date, orders_id, raw_material_id)
+VALUES ((SELECT nextval('order_product_seq')), '10-10-20', 10, 100,'10-10-20',1,2);
+
+INSERT INTO orders_product(id, create_date, number_of, sum_of, update_date, orders_id, raw_material_id)
+VALUES ((SELECT nextval('order_product_seq')), '10-10-20', 10, 100,'10-10-20',1,3);
+
+INSERT INTO orders_product(id, create_date, number_of, sum_of, update_date, orders_id, raw_material_id)
+VALUES ((SELECT nextval('order_product_seq')), '10-10-20', 10, 100,'10-10-20',2,1);
+
+INSERT INTO orders_product(id, create_date, number_of, sum_of, update_date, orders_id, raw_material_id)
+VALUES ((SELECT nextval('order_product_seq')), '10-10-20', 10, 100,'10-10-20',2,2);
+
+INSERT INTO orders_product(id, create_date, number_of, sum_of, update_date, orders_id, raw_material_id)
+VALUES ((SELECT nextval('order_product_seq')), '10-10-20', 10, 100,'10-10-20',2,3);
+
+INSERT INTO orders_product(id, create_date, number_of, sum_of, update_date, orders_id, raw_material_id)
+VALUES ((SELECT nextval('order_product_seq')), '10-10-20', 10, 100,'10-10-20',3,1);
+
+INSERT INTO orders_product(id, create_date, number_of, sum_of, update_date, orders_id, raw_material_id)
+VALUES ((SELECT nextval('order_product_seq')), '10-10-20', 10, 100,'10-10-20',3,2);
+
+INSERT INTO orders_product(id, create_date, number_of, sum_of, update_date, orders_id, raw_material_id)
+VALUES ((SELECT nextval('order_product_seq')), '10-10-20', 10, 100,'10-10-20',3,3);
