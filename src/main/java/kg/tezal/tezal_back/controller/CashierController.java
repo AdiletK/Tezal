@@ -1,99 +1,199 @@
 package kg.tezal.tezal_back.controller;
 
-import kg.tezal.tezal_back.apicontroller.BalanceHistoryRestController;
-import kg.tezal.tezal_back.apicontroller.OrgBonusTypeRestController;
+import kg.tezal.tezal_back.apicontroller.OrderMaterialRestController;
+import kg.tezal.tezal_back.apicontroller.OrderRestController;
+import kg.tezal.tezal_back.apicontroller.RawMaterialRestController;
 import kg.tezal.tezal_back.apicontroller.UserRestController;
+import kg.tezal.tezal_back.entity.Order;
 import kg.tezal.tezal_back.entity.User;
-import kg.tezal.tezal_back.enums.OperationType;
-import kg.tezal.tezal_back.service.CashierService;
-import kg.tezal.tezal_back.model.*;
+import kg.tezal.tezal_back.enums.OrderStatus;
+import kg.tezal.tezal_back.model.OrderMaterialModel;
+import kg.tezal.tezal_back.model.OrderModel;
+import kg.tezal.tezal_back.model.RawMaterialShortModel;
+import kg.tezal.tezal_back.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/cashier")
 @Controller
 public class CashierController {
+    private final OrderMaterialRestController orderMaterialRestController;
+    private final OrderRestController orderRestController;
+    private final UserRestController userRestController;
     @Autowired
-    private OrgBonusTypeRestController orgBonusTypeRestController;
-   @Autowired
-    private BalanceHistoryRestController balanceHistoryRestController;
+    private OrderService orderService;
     @Autowired
-    private UserRestController userRestController;
-    @Autowired
-    private CashierService cashierService;
+    private RawMaterialRestController materialRestController;
+    private List<RawMaterialShortModel> materialsName;
 
     private Long orgId;
     private Long userId;
 
-    @GetMapping
-    public String operationPage(Model model){
-        getUserDetails();
+    public CashierController(OrderMaterialRestController orderMaterialRestController, OrderRestController orderRestController, UserRestController userRestController) {
+        this.orderMaterialRestController = orderMaterialRestController;
+        this.orderRestController = orderRestController;
+        this.userRestController = userRestController;
+    }
 
-        List<OrgBonusTypeModel> orgBonusTypeList = orgBonusTypeRestController.findAllOrgBonusTypeDto();
-        model.addAttribute("orgBonusTypeList", orgBonusTypeList);
+    @GetMapping("/orders")
+    public String operationPage(@RequestParam(value = "search" ,required = false) String search,
+                          @PageableDefault(7) Pageable pageable, Model model) {
+        getUserDetails();
+        Page<OrderModel> orders = orderService.findAllByOrgIdAndByNameOrDescriptionForCashier(  orgId,search != null ? search.toLowerCase() : "", pageable);
+        List<OrderModel> l = orderService.findAllByOrgId(orgId);
         model.addAttribute("orgId", orgId);
-        model.addAttribute("confirmBalance", new BalanceConfirmModel());
-        return "cashierOperation";
+        model.addAttribute("search", search);
+        model.addAttribute("orders", orders);
+        return "orderList";
+    }
+    @GetMapping("/{id}/material/list")
+    public String materialPage(@PathVariable Long id, Model model){
+        Order orderModel = orderRestController.getOrderById(id);
+        String client = orderModel.getClient().getFirstName() + " " + orderModel.getClient().getLastName();
+        model.addAttribute("materials", orderMaterialRestController.getAll(id));
+        model.addAttribute("client", client);
+        return "orderMaterialList";
+    }
+
+    @GetMapping("/{id}/confirm")
+    public String confirmMethod(@PathVariable Long id){
+        if (userId == null) getUserDetails();
+        OrderModel orderModel = orderRestController.getOrderModelById(id);
+        orderModel.setOrdersStatus(OrderStatus.ACCEPT);
+        orderModel.setUserId(userId);
+        orderRestController.putOrder(id, orderModel);
+        return "redirect:material/list";
+    }
+    @GetMapping("/{id}/decline")
+    public String declinedMethod(@PathVariable Long id){
+        if (userId == null) getUserDetails();
+        OrderModel orderModel = orderRestController.getOrderModelById(id);
+        orderModel.setOrdersStatus(OrderStatus.DECLINED);
+        orderModel.setUserId(userId);
+        orderRestController.putOrder(id, orderModel);
+        return "redirect:/cashier/orders";
+    }
+    @GetMapping("/{id}/ready")
+    public String readyMethod(@PathVariable Long id){
+        if (userId == null) getUserDetails();
+        OrderModel orderModel = orderRestController.getOrderModelById(id);
+        orderModel.setOrdersStatus(OrderStatus.READY);
+        orderModel.setUserId(userId);
+        orderRestController.putOrder(id, orderModel);
+        return "redirect:/cashier/orders";
+    }
+    @GetMapping("/{id}/delivered")
+    public String deliveredMethod(@PathVariable Long id){
+        if (userId == null) getUserDetails();
+        OrderModel orderModel = orderRestController.getOrderModelById(id);
+        orderModel.setOrdersStatus(OrderStatus.DELIVERED);
+        orderModel.setUserId(userId);
+        orderRestController.putOrder(id, orderModel);
+        return "redirect:/cashier/orders";
     }
 
     @GetMapping("/history")
     public String getHistory(Model model){
         if (userId == null)
             getUserDetails();
-        List<BalanceHistoryLongModel> list = balanceHistoryRestController.getBalanceHistoryByUserId(userId, null, null);
-        model.addAttribute("history", list);
         return "cashierHistory";
     }
+
     @GetMapping("/history/filter")
     public String getHistoryWithFilter(@RequestParam("dateFrom") String dateFrom,
                                        @RequestParam("dateTo") String dateTo, Model model){
         if (userId == null)
             getUserDetails();
 
-        List<BalanceHistoryLongModel> list;
+//        List<BalanceHistoryLongModel> list;
         if (dateFrom.isEmpty() || dateTo.isEmpty()){
-            list = balanceHistoryRestController.getBalanceHistoryByUserId(userId, null, null);
+//            list = balanceHistoryRestController.getBalanceHistoryByUserId(userId, null, null);
         } else {
-            list = balanceHistoryRestController.getBalanceHistoryByUserId(userId, dateFrom, dateTo);
+//            list = balanceHistoryRestController.getBalanceHistoryByUserId(userId, dateFrom, dateTo);
         }
-        model.addAttribute("history", list);
+//        model.addAttribute("history", list);
         model.addAttribute("dateFrom", dateFrom);
         model.addAttribute("dateTo", dateTo);
         return "cashierHistory";
     }
 
-    @GetMapping("/create")
-    public String confirm(@Valid @ModelAttribute("confirmBalance") BalanceConfirmModel balanceConfirm,
-                           Model model){
-        BonusValueModel bonusValueModel = cashierService.getBonusValueByOrgIdAndTypeId(orgId, balanceConfirm.getTypeId());
-        model.addAttribute("organization", bonusValueModel);
-        model.addAttribute("confirmBalance",balanceConfirm);
-        System.out.println("Operation-----------------------"+ balanceConfirm);
-        return "cashierConfirmPage";
+    @GetMapping("/{id}/material/{matId}")
+    public String getOrderMaterialDetailPage(@PathVariable("id") Long orderId, @PathVariable("matId")Long matId,
+                                             Model model) {
+        OrderMaterialModel orderMaterialModel = orderMaterialRestController.getOrderMaterialModelById(matId);
+        loadAddAttributes(orderId, orgId, model, orderMaterialModel, false);
+        return "orderMaterialForm";
+    }
+    @PostMapping(value = "/{id}/material/update/{matId}")
+    public String updateOrderMaterialDetailPage(@PathVariable("id") Long orderId,
+                                                @PathVariable("matId")Long matId, Model model,
+                                                @Valid @ModelAttribute("orderMaterial") OrderMaterialModel orderMaterialModel,
+                                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            orderMaterialModel.setId(matId);
+            loadAddAttributes(orderId, orgId, model, orderMaterialModel, false);
+            return "orderMaterialForm";
+        }
+        orderMaterialModel.setOrderId(orderId);
+        orderMaterialRestController.putOrderMaterial(matId, orderMaterialModel);
+        return "redirect:/cashier/" + orderId + "/material/list";
     }
 
-    @PostMapping("/create")
-    public String create(@ModelAttribute("confirmBalance") BalanceConfirmModel balanceConfirm, Model model){
-        System.out.println("Operation-----------------------"+ balanceConfirm);
-        BonusValueModel bonusValueModel = cashierService.getBonusValueByOrgIdAndTypeId(orgId, balanceConfirm.getTypeId());
-        if (balanceConfirm.getPoint()>0){
-            boolean res = cashierService.updateBalance(balanceConfirm.getPoint() , balanceConfirm.getClientId(), bonusValueModel.getBonusId());
-            if (!res){
-                model.addAttribute("confirmBalance",balanceConfirm);
-                return "cashierConfirmPage";
-            }
-            cashierService.insertBalanceHistory(orgId, userId, balanceConfirm, bonusValueModel, OperationType.CREDIT);
+    @GetMapping("/{id}/material/form")
+    public String getOrderMaterialPage(@PathVariable("id") Long orderId, Model model) {
+        OrderMaterialModel orderMaterial = new OrderMaterialModel();
+        loadAddAttributes(orderId, orgId, model, orderMaterial, true);
+        return "orderMaterialForm";
+    }
+
+    @PostMapping(value = "/{id}/material/addMaterial")
+    public String addOrderMaterialPage(@PathVariable("id") Long orderId, Model model,
+                                       @Valid @ModelAttribute("orderMaterial")OrderMaterialModel orderMaterialModel,
+                                       BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            loadAddAttributes(orderId, orgId, model, orderMaterialModel, true);
+            return "orderMaterialForm";
         }
-        cashierService.addBonusToBalance(orgId, userId, balanceConfirm,bonusValueModel.getValue());
-        return "redirect:/cashier";
+        orderMaterialModel.setOrderId(orderId);
+        orderMaterialRestController.postOrderMaterial(orderMaterialModel);
+        return "redirect:/cashier/" + orderId + "/material/list";
+    }
+    @GetMapping("/{orderId}/material/delete/{id}")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String deleteOrderMaterial(@PathVariable("orderId") Long orderId, @PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            orderMaterialRestController.deleteById(id);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("has_exception", true);
+            redirectAttributes.addFlashAttribute("exception_text", "Couldn't delete on table orderMaterial violates foreign key constraint ");
+            return "redirect:/cashier/" + orderId + "/material/" + id;
+        }
+        return "redirect:/cashier/" + orderId + "/material/list";
+    }
+
+    private void loadAddAttributes(Long orderId, Long orgId, Model model, OrderMaterialModel orderMaterial, boolean b) {
+        model.addAttribute("orderMaterial", orderMaterial);
+        model.addAttribute("orgId", orgId);
+        model.addAttribute("orderId", orderId);
+        model.addAttribute("materials", loadMaterials());
+        model.addAttribute("add", b);
+    }
+
+    private List<RawMaterialShortModel> loadMaterials(){
+        return  materialsName == null ? materialRestController.getMaterialsName()
+                : materialsName;
     }
 
     private void getUserDetails() {
@@ -103,20 +203,5 @@ public class CashierController {
         userId = user.getId();
         orgId = user.getOrganization().getId();
     }
-
-    @ResponseBody()
-    @RequestMapping(value = "/check", method = RequestMethod.GET,
-            produces = "application/json")
-    public  List<String> check(@RequestParam Long clientId, @RequestParam Long tId, @RequestParam Double point){
-        List<HistoryModel> balance = cashierService.findBalanceByClientAndOrgAndBonusTypeId(clientId, orgId, tId);
-        List<String> result = new ArrayList<>();
-        if ((balance.get(0).getTotal() / 2 - point) >= 0){
-            result.add("SUCCESS");
-        } else{
-            result.add("FAIL");
-        }
-        return result;
-    }
-
 
 }

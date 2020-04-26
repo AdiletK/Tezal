@@ -23,7 +23,7 @@ public class MaterialCategoryController {
     }
 
     @GetMapping(value = "/list")
-    public String getUnitList(
+    public String getCategoryList(
             @PageableDefault(7) Pageable pageable, Model model) {
         Page<MaterialCategory> categories = categoryService.findAll(pageable);
         model.addAttribute("categories", categories);
@@ -31,7 +31,7 @@ public class MaterialCategoryController {
     }
 
     @GetMapping(value = "/{id}")
-    public String unitGet(@PathVariable(required = false) Long id, Model model) {
+    public String categoryGet(@PathVariable(required = false) Long id, Model model) {
         MaterialCategory category = categoryService.findById(id);
         model.addAttribute("category", category);
         model.addAttribute("add", false);
@@ -39,7 +39,7 @@ public class MaterialCategoryController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateUnit(@PathVariable("id") Long id,
+    public String updateCategory(@PathVariable("id") Long id,
                                        @Valid @ModelAttribute("category") MaterialCategory category,
                                        BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -52,7 +52,7 @@ public class MaterialCategoryController {
     }
 
     @GetMapping(value = "/form")
-    public String unitForm(Model model) {
+    public String categoryForm(Model model) {
         MaterialCategory category = new MaterialCategory();
         model.addAttribute("category", category);
         model.addAttribute("add", true);
@@ -60,7 +60,7 @@ public class MaterialCategoryController {
     }
 
     @PostMapping(value = "/create")
-    public String createUnit(@Valid @ModelAttribute("category") MaterialCategory category,
+    public String createCategory(@Valid @ModelAttribute("category") MaterialCategory category,
                             BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute(category);

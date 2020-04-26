@@ -51,6 +51,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page<OrderModel> findAllByOrgIdAndByNameOrDescriptionForCashier(Long id, String search, Pageable pageable) {
+        return orderRepository.findAllOrdersByOrgIdAndByNameOrDescriptionForCashier(id, search, pageable);
+    }
+
+    @Override
     public Order create(OrderModel orderModel) {
         Order order = new Order();
         return getOrder(orderModel, order);

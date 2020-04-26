@@ -24,6 +24,11 @@ public class OrderRestController {
         return orderService.findById(id);
     }
 
+    @GetMapping("/model/{id}")
+    public OrderModel getOrderModelById(@PathVariable("id") Long id) {
+        return orderService.getById(id);
+    }
+
     @GetMapping("/all")
     public List<OrderModel> getAll(@RequestParam("orgId")Long orgId) {
         return orderService.findAllByOrgId(orgId);

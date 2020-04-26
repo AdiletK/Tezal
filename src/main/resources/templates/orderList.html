@@ -25,8 +25,18 @@
                            data-th-text="#{button.label.create}"></a>
                     </div>
                 </div>
-                <form class="row" th:action="@{'/organization/' + ${orgId} + '/order/list'}" method="get">
+                <form sec:authorize="hasAnyRole('ADMIN','MANAGER')" class="row" th:action="@{'/organization/' + ${orgId} + '/order/list'}" method="get">
                     <div id="custom-search" class="top-search-bar col">
+                        <input width="125px" class="form-control" type="text" name="search"
+                               th:placeholder="#{order.label.search}">
+                    </div>
+                    <div class="col float-right">
+                        <button type="submit" class="btn btn-info m-t-10"
+                                data-th-text="#{button.label.search}"></button>
+                    </div>
+                </form>
+                <form sec:authorize="hasRole('CASHIER')" class="row" th:action="@{'/cashier/orders'}" method="get">
+                    <div id="cashier-search" class="top-search-bar col">
                         <input width="125px" class="form-control" type="text" name="search"
                                th:placeholder="#{order.label.search}">
                     </div>
@@ -44,7 +54,6 @@
                             <th class="border-0">#</th>
                             <th class="border-0" data-th-text="#{order.label.user}"></th>
                             <th class="border-0" data-th-text="#{order.label.date}"></th>
-                            <th class="border-0" data-th-text="#{order.label.status}"></th>
                             <th class="border-0" data-th-text="#{label.material}"></th>
                         </tr>
                         </thead>
@@ -53,20 +62,52 @@
                             <td th:text="${id.index+1}">1</td>
                             <td th:text="${order.clientFirstName} + ' ' + ${order.clientLastName}"> </td>
                             <td th:text="${order.updatedDate}"> </td>
+                            <td align="center"><a th:href="${order.id}+'/material/list'"><i class="far fa-bookmark"></i></a></td>
+
                             <td sec:authorize="hasRole('ADMIN')" th:text="${order.getOrdersStatus()}"> </td>
                             <td sec:authorize="hasRole('MANAGER')">
                                 <select class="form-control" id="status-select">
                                     <option th:each="status : ${T(kg.tezal.tezal_back.enums.OrderStatus).values()}"
                                             th:selected="${order.getOrdersStatus()} == ${status} ? true : false"
                                             th:value="${status}" th:text="${status}"
-
                                     ></option>
                                 </select>
                             </td>
-                            <td>
-                                <a th:href="${order.id}+'/material/list'"><i class="far fa-bookmark"></i></a>
+
+                            <td th:switch="${order.getOrdersStatus()}" >
+                                <div th:case="${T(kg.tezal.tezal_back.enums.OrderStatus).AWAITING}" >
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a style="width: 100%" class="btn btn-outline-success" th:href="${order.id}+'/confirm'" data-th-text="#{order.label.accept}">Accept</a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a style="width: 100%" class="btn btn-outline-danger" th:href="${order.id}+'/decline'" data-th-text="#{order.label.decline}"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:case="${T(kg.tezal.tezal_back.enums.OrderStatus).ACCEPT}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a style="width: 100%" class="btn btn-outline-primary" th:href="${order.id}+'/ready'" data-th-text="#{order.label.ready}"></a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a style="width: 100%" class="btn btn-outline-danger" th:href="${order.id}+'/decline'" data-th-text="#{order.label.decline}"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div th:case="${T(kg.tezal.tezal_back.enums.OrderStatus).READY}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <a style="width: 100%" class="btn btn-outline-secondary" th:href="${order.id}+'/delivered'" data-th-text="#{order.label.delivered}"></a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a style="width: 100%" class="btn btn-outline-danger" th:href="${order.id}+'/decline'" data-th-text="#{order.label.decline}"></a>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
-                            <td><a th:href="${order.id}"><i class="fa fa-arrow-right"></i></a></td>
+
+                            <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"><a th:href="${order.id}"><i class="fa fa-arrow-right"></i></a></td>
 
                         </tr>
                         </tbody>

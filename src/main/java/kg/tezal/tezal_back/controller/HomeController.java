@@ -20,7 +20,7 @@ public class HomeController {
         if (isAdmin) {
             return "redirect:/organization/list";
         } else if (isCashier){
-            return "redirect:/cashier/";
+            return "redirect:/cashier/orders";
         }
         return "redirect:/organization/forOrgAdmin";
     }

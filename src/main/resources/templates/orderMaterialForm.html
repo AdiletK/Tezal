@@ -18,7 +18,7 @@
         <div class="card">
             <div class="card-body">
                 <form action="#" th:action="${add} ? @{addMaterial} :
-                '/organization/' + ${orgId} + '/order/' + ${orderId} + '/material/update/' + ${orderMaterial.id}"  th:object="${orderMaterial}" method="POST">
+                'update/' + ${orderMaterial.id}"  th:object="${orderMaterial}" method="POST">
                     <div class="form-group">
                         <div class="form-group">
                             <label class="text-dark font-bold col-form-label col-form-label" for="input-select" data-th-text="#{rate.label.product}"></label>
