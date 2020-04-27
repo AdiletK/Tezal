@@ -18,6 +18,8 @@ public interface OrderService {
 
     Page<OrderModel> findAllByOrgIdAndByNameOrDescriptionForCashier(Long id, String search, Pageable pageable);
 
+    Page<OrderModel> findAllByUserIdAndByNameOrDescriptionForCashier(Long id, String search, Pageable pageable);
+
     Order create(OrderModel rateModel);
 
     String deleteById(Long id);

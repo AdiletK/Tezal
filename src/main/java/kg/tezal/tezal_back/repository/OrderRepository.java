@@ -27,5 +27,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "orders.organization.id = :id and orders.ordersStatus<>kg.tezal.tezal_back.enums.OrderStatus.DELIVERED and orders.ordersStatus<>kg.tezal.tezal_back.enums.OrderStatus.DECLINED and (lower(orders.client.firstName) like %:search% or lower(orders.client.lastName) like %:search% ) ORDER BY orders.id ASC")
     Page<OrderModel> findAllOrdersByOrgIdAndByNameOrDescriptionForCashier(@Param("id") Long id, String search, Pageable pageable);
 
+    @Query("select new kg.tezal.tezal_back.model.OrderModel(orders.id, orders.ordersStatus, orders.user.id, orders.client.id, orders.client.firstName, orders.client.lastName, orders.organization.id, orders.organization.name, orders.updateDate) FROM Order orders WHERE " +
+            "orders.user.id = :id and orders.ordersStatus<>kg.tezal.tezal_back.enums.OrderStatus.ACCEPT and orders.ordersStatus<>kg.tezal.tezal_back.enums.OrderStatus.AWAITING and orders.ordersStatus<>kg.tezal.tezal_back.enums.OrderStatus.READY and (lower(orders.client.firstName) like %:search% or lower(orders.client.lastName) like %:search% ) ORDER BY orders.id ASC")
+    Page<OrderModel> findAllOrdersByUserIdAndByNameOrDescriptionForCashier(@Param("id") Long id, String search, Pageable pageable);
 
 }

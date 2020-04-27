@@ -102,18 +102,14 @@
 
                                 <li class="nav-item">
                                     <!--Operation-->
-                                    <a class="nav-link" th:href="@{'/cashier'}" data-th-text="#{leftMenu.label.cashier_operation}"><span class="badge badge-secondary" data-th-text="#{leftMenu.label.new}"></span></a>
+                                    <a class="nav-link" th:href="@{'/cashier/orders'}" data-th-text="#{leftMenu.label.cashier_operation}"><span class="badge badge-secondary" data-th-text="#{leftMenu.label.new}"></span></a>
                                 </li>
                                 <li class="nav-item">
-                                    <!--History-->
-                                    <a class="nav-link" th:href="@{'/cashier/history'}" data-th-text="#{leftMenu.label.products}"></a>
+                                    <a class="nav-link" th:href="@{'/cashier/history'}" data-th-text="#{leftMenu.label.cashier_history}"></a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" th:href="@{'/cashier/history'}" data-th-text="#{label.purchases}"></a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" th:href="@{'/'}" data-th-text="#{label.sales}"></a>
-                                </li>
+<!--                                <li class="nav-item">-->
+<!--                                    <a class="nav-link" th:href="@{'/'}" data-th-text="#{label.sales}"></a>-->
+<!--                                </li>-->
                             </ul>
                         </div>
                     </li>

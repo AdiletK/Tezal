@@ -48,11 +48,10 @@ public class CashierController {
     }
 
     @GetMapping("/orders")
-    public String operationPage(@RequestParam(value = "search" ,required = false) String search,
+    public String operationPage(@RequestParam(value = "search" ,required = false, defaultValue = "") String search,
                           @PageableDefault(7) Pageable pageable, Model model) {
         getUserDetails();
-        Page<OrderModel> orders = orderService.findAllByOrgIdAndByNameOrDescriptionForCashier(  orgId,search != null ? search.toLowerCase() : "", pageable);
-        List<OrderModel> l = orderService.findAllByOrgId(orgId);
+        Page<OrderModel> orders = orderService.findAllByOrgIdAndByNameOrDescriptionForCashier(  orgId, search.toLowerCase() , pageable);
         model.addAttribute("orgId", orgId);
         model.addAttribute("search", search);
         model.addAttribute("orders", orders);
@@ -69,45 +68,35 @@ public class CashierController {
 
     @GetMapping("/{id}/confirm")
     public String confirmMethod(@PathVariable Long id){
-        if (userId == null) getUserDetails();
-        OrderModel orderModel = orderRestController.getOrderModelById(id);
-        orderModel.setOrdersStatus(OrderStatus.ACCEPT);
-        orderModel.setUserId(userId);
-        orderRestController.putOrder(id, orderModel);
+        changeStatus(id, OrderStatus.ACCEPT);
         return "redirect:material/list";
     }
+
     @GetMapping("/{id}/decline")
     public String declinedMethod(@PathVariable Long id){
-        if (userId == null) getUserDetails();
-        OrderModel orderModel = orderRestController.getOrderModelById(id);
-        orderModel.setOrdersStatus(OrderStatus.DECLINED);
-        orderModel.setUserId(userId);
-        orderRestController.putOrder(id, orderModel);
+        changeStatus(id, OrderStatus.DECLINED);
         return "redirect:/cashier/orders";
     }
+
     @GetMapping("/{id}/ready")
     public String readyMethod(@PathVariable Long id){
-        if (userId == null) getUserDetails();
-        OrderModel orderModel = orderRestController.getOrderModelById(id);
-        orderModel.setOrdersStatus(OrderStatus.READY);
-        orderModel.setUserId(userId);
-        orderRestController.putOrder(id, orderModel);
+        changeStatus(id, OrderStatus.READY);
         return "redirect:/cashier/orders";
     }
+
     @GetMapping("/{id}/delivered")
     public String deliveredMethod(@PathVariable Long id){
-        if (userId == null) getUserDetails();
-        OrderModel orderModel = orderRestController.getOrderModelById(id);
-        orderModel.setOrdersStatus(OrderStatus.DELIVERED);
-        orderModel.setUserId(userId);
-        orderRestController.putOrder(id, orderModel);
+        changeStatus(id, OrderStatus.DELIVERED);
         return "redirect:/cashier/orders";
     }
 
     @GetMapping("/history")
-    public String getHistory(Model model){
-        if (userId == null)
-            getUserDetails();
+    public String getHistory(@RequestParam(value = "search" ,required = false, defaultValue = "") String search,
+                             @PageableDefault(7) Pageable pageable, Model model){
+        if (userId == null) getUserDetails();
+        Page<OrderModel> historyModel = orderService.findAllByUserIdAndByNameOrDescriptionForCashier(userId, search.toLowerCase(), pageable);
+        model.addAttribute("orders", historyModel);
+        model.addAttribute("search", search);
         return "cashierHistory";
     }
 
@@ -136,6 +125,7 @@ public class CashierController {
         loadAddAttributes(orderId, orgId, model, orderMaterialModel, false);
         return "orderMaterialForm";
     }
+
     @PostMapping(value = "/{id}/material/update/{matId}")
     public String updateOrderMaterialDetailPage(@PathVariable("id") Long orderId,
                                                 @PathVariable("matId")Long matId, Model model,
@@ -150,7 +140,6 @@ public class CashierController {
         orderMaterialRestController.putOrderMaterial(matId, orderMaterialModel);
         return "redirect:/cashier/" + orderId + "/material/list";
     }
-
     @GetMapping("/{id}/material/form")
     public String getOrderMaterialPage(@PathVariable("id") Long orderId, Model model) {
         OrderMaterialModel orderMaterial = new OrderMaterialModel();
@@ -170,6 +159,7 @@ public class CashierController {
         orderMaterialRestController.postOrderMaterial(orderMaterialModel);
         return "redirect:/cashier/" + orderId + "/material/list";
     }
+
     @GetMapping("/{orderId}/material/delete/{id}")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String deleteOrderMaterial(@PathVariable("orderId") Long orderId, @PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
@@ -182,13 +172,20 @@ public class CashierController {
         }
         return "redirect:/cashier/" + orderId + "/material/list";
     }
-
     private void loadAddAttributes(Long orderId, Long orgId, Model model, OrderMaterialModel orderMaterial, boolean b) {
         model.addAttribute("orderMaterial", orderMaterial);
         model.addAttribute("orgId", orgId);
         model.addAttribute("orderId", orderId);
         model.addAttribute("materials", loadMaterials());
         model.addAttribute("add", b);
+    }
+
+    private void changeStatus(Long id, OrderStatus status) {
+        if (userId == null) getUserDetails();
+        OrderModel orderModel = orderRestController.getOrderModelById(id);
+        orderModel.setOrdersStatus(status);
+        orderModel.setUserId(userId);
+        orderRestController.putOrder(id, orderModel);
     }
 
     private List<RawMaterialShortModel> loadMaterials(){

@@ -36,7 +36,7 @@
                     </div>
                     <div class="form-group">
                         <label class="text-dark font-bold col-form-label" for="volume" data-th-text="#{material.label.volume}"></label>
-                        <input  th:value="${add} ? '' : ${material.volume} " th:field="*{volume}" id="volume" type="number" step="0.0001" class="form-control">
+                        <input  th:value="${add} ? '' : ${material.volume} " th:field="*{volume}" id="volume" type="number" step="0.0001" min="0" class="form-control">
                         <p th:if="${#fields.hasErrors('volume')}" style="color: red;" th:errors="*{volume}">Incorrect LP</p>
                     </div>
                     <div class="form-group">
