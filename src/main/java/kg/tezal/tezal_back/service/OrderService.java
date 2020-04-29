@@ -15,6 +15,8 @@ public interface OrderService {
     List<OrderModel> findAllByOrgId(Long id);
 
     Page<OrderModel> findAllByOrgIdAndByNameOrDescription(Long id, String search, Pageable pageable);
+    Page<OrderModel> findAllByOrgIdAndByNameOrDescriptionManager(Long id, String search, Pageable pageable);
+    Page<OrderModel> findAllDeliveredByOrgIdAndByNameOrDescription(Long id, String search, Pageable pageable);
 
     Page<OrderModel> findAllByOrgIdAndByNameOrDescriptionForCashier(Long id, String search, Pageable pageable);
 

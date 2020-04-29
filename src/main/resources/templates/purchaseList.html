@@ -64,7 +64,8 @@
                     </table>
                 </div>
         </div>
-        <nav aria-label="Page navigation example" class="m-l-20">
+    </div>
+        <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-start">
                 <li th:if="${purchases.hasPrevious()}" class="page-item">
                     <a class="page-link" th:href="'/organization/' + ${orgId} + '/purchase/list?search='+${search}+'&page='+${materials.number-1}" tabindex="-1" ><i class="fa fa-chevron-left"></i></a>
@@ -83,7 +84,7 @@
             </ul>
         </nav>
     </div>
-    </div>
+
 </div>
 </body>
 

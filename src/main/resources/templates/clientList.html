@@ -32,18 +32,18 @@
                 </form>
 
             </div>
-            <div sec:authorize="hasRole('ADMIN')" class="card-body">
-                <form action="#" method="GET">
-                    <div class="form-group">
-                        <label class="text-brand font-bold" for="input-select" data-th-text="#{label.org_name}"></label>
-                        <select class="form-control" id="input-select">
-                            <!--list of organization categories-->
-                            <option disabled selected value data-th-text="#{option.label.organization}"> </option>
-                            <option id="orgId" th:each="organization : ${organizations}" th:value="${organization.id}" th:text="${organization.name}"></option>
-                        </select>
-                    </div>
-                </form>
-            </div>
+<!--            <div sec:authorize="hasRole('ADMIN')" class="card-body">-->
+<!--                <form action="#" method="GET">-->
+<!--                    <div class="form-group">-->
+<!--                        <label class="text-brand font-bold" for="input-select" data-th-text="#{label.org_name}"></label>-->
+<!--                        <select class="form-control" id="input-select">-->
+<!--                            &lt;!&ndash;list of organization categories&ndash;&gt;-->
+<!--                            <option disabled selected value data-th-text="#{option.label.organization}"> </option>-->
+<!--                            <option id="orgId" th:each="organization : ${organizations}" th:value="${organization.id}" th:text="${organization.name}"></option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
 
             <div id="resultBlock" th:fragment="resultList" class="card-body p-0" th:unless="${#lists.isEmpty(clients)}">
                 <div class="table-responsive">
@@ -55,7 +55,7 @@
                             <th class="border-0" data-th-text="#{clientDetailPage.label.last_name}"></th>
                             <th class="border-0" data-th-text="#{clientDetailPage.label.patronymic}"></th>
                             <th sec:authorize="hasRole('ADMIN')" class="border-0" data-th-text="#{clientList.button.label.profile}"></th>
-                            <th class="border-0" data-th-text="#{clientList.button.label.preferences}"></th>
+<!--                            <th class="border-0" data-th-text="#{clientList.button.label.preferences}"></th>-->
 <!--                            <th sec:authorize="hasRole('ADMIN')" class="border-0" data-th-text="#{clientList.button.label.balance}"></th>-->
                         </tr>
                         </thead>
@@ -69,7 +69,7 @@
                             <td th:text="${client.lastName}"></td>
                             <td th:text="${client.patronymic}"></td>
                             <td sec:authorize="hasRole('ADMIN')" ><a th:href="@{'/client/' + ${client.id} }" data-th-text="#{clientList.button.label.profile_s}"></a></td>
-                            <td><a th:href="@{'/client/' + ${client.id} + '/preferences'}" data-th-text="#{clientList.button.label.preferences_s}"></a></td>
+<!--                            <td><a th:href="@{'/client/' + ${client.id} + '/preferences'}" data-th-text="#{clientList.button.label.preferences_s}"></a></td>-->
 <!--                            <td sec:authorize="hasRole('ADMIN')" ><a th:href="@{'/client/' + ${client.id} + '/balances'}" data-th-text="#{clientList.button.label.balance_s}"></a></td>-->
                         </tr>
                         <!--    end of looping     -->

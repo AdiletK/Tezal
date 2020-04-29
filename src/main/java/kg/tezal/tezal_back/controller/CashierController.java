@@ -1,9 +1,6 @@
 package kg.tezal.tezal_back.controller;
 
-import kg.tezal.tezal_back.apicontroller.OrderMaterialRestController;
-import kg.tezal.tezal_back.apicontroller.OrderRestController;
-import kg.tezal.tezal_back.apicontroller.RawMaterialRestController;
-import kg.tezal.tezal_back.apicontroller.UserRestController;
+import kg.tezal.tezal_back.apicontroller.*;
 import kg.tezal.tezal_back.entity.Order;
 import kg.tezal.tezal_back.entity.User;
 import kg.tezal.tezal_back.enums.OrderStatus;
@@ -36,6 +33,9 @@ public class CashierController {
     private OrderService orderService;
     @Autowired
     private RawMaterialRestController materialRestController;
+    @Autowired
+    ClientRestController clientRestController;
+
     private List<RawMaterialShortModel> materialsName;
 
     private Long orgId;
@@ -172,6 +172,30 @@ public class CashierController {
         }
         return "redirect:/cashier/" + orderId + "/material/list";
     }
+    @GetMapping("/form")
+    public String orderForm(Model model) {
+        OrderModel order = new OrderModel();
+        model.addAttribute("clients", clientRestController.getAll());
+        model.addAttribute("add", true);
+        model.addAttribute("order", order);
+        return "orderForm";
+    }
+    @PostMapping(value = "/create")
+    public String createOrder(@Valid @ModelAttribute("order") OrderModel orderModel,
+                              BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("add",true);
+            model.addAttribute(orderModel);
+            return "orderForm";
+        }
+        if (orgId == null || userId == null)
+            getUserDetails();
+        orderModel.setOrganizationId(orgId);
+        orderModel.setUserId(userId);
+        orderService.create(orderModel);
+        return "redirect:/cashier/orders";
+    }
+
     private void loadAddAttributes(Long orderId, Long orgId, Model model, OrderMaterialModel orderMaterial, boolean b) {
         model.addAttribute("orderMaterial", orderMaterial);
         model.addAttribute("orgId", orgId);

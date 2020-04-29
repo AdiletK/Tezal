@@ -28,23 +28,9 @@
                                 <th class="border-0" data-th-text="#{org_category.label.image}"></th>
                                 <th class="border-0" data-th-text="#{org_category.label.org_category}"></th>
 <!--                                <th class="border-0" data-th-text="#{label.tags}"></th>-->
-                                <th class="border-0" data-th-text="#{button.label.delete}"></th>
-                            </tr>
-                            <style>
-                                .btn1 {
-                                    background-color: white;
-                                    border: none;
-                                    color: grey;
-                                    padding: 12px 16px;
-                                    font-size: 20px;
-                                    cursor: pointer;
-                                }
 
-                                /* Darker background on mouse-over */
-                                .btn1:hover {
-                                    background-color: red;
-                                }
-                            </style>
+<!--                                <th class="border-0" data-th-text="#{button.label.delete}"></th>-->
+                            </tr>
                             </thead>
                             <tbody>
                             <!--looping through organizations materialCategory list-->
@@ -57,32 +43,8 @@
                                     </td>
                                     <td><a th:href="${materialCategory.id}" > <p th:text="${materialCategory.name}"/> </a> </td>
 <!--                                    <td><a th:href="'/org_category/' + ${materialCategory.id} + '/tag/'" > <i class="fa fa-tags"></i></a> </td>-->
-                                    <td>
-                                        <button type="button" class="btn1 " data-toggle="modal" th:attr="data-target='#recordDeleteModal'+${materialCategory.id}"><i class="fa fa-trash"></i></button>
-                                        <!-- Modal -->
-                                        <div class="modal fade" th:attr="id='recordDeleteModal'+${materialCategory.id}" tabindex="-1" role="dialog" aria-labelledby="recordDeleteModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="recordDeleteModalLabel" data-th-text="#{button.label.delete_message}"></h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <label data-th-text="#{org_category.label.confirm_to_delete}"></label>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-th-text="#{label.no}"></button>
-                                                        <form th:action="@{/org_category/delete/{id}(id = ${materialCategory.id})}" th:object="${materialCategory}" method="POST">
-                                                            <button type="submit" class="btn btn-primary" data-th-text="#{label.yes}"></button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Modal end -->
-                                    </td>
+                                    <td><a th:href="${materialCategory.id}"><i class="fa fa-arrow-right"></i></a></td>
+
                                 </tr>
                             <!--    end of looping     -->
                             </tbody>

@@ -1,6 +1,5 @@
 <!doctype html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
-      xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout}">
 <head>
     <title data-th-text="#{managerList.label.stuff}"></title>
@@ -8,7 +7,7 @@
 
 <body>
 <div layout:fragment="content">
-    <div class="col-xl-9 col-lg-12 col-md-6 col-sm-12 col-12">
+    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
         <div class="card">
             <!--  Table header and 'Create' Button  -->
             <div class="card-header">
@@ -19,15 +18,15 @@
                     <div class="col-md-2 float-right">
                         <a class="btn btn-success m-t-10" th:href="@{'/organization/' + ${orgId} + '/manager/form'}" data-th-text="#{button.label.create}"></a>
                     </div>
-                    <form class="row" th:action="@{'/organization/' + ${orgId} + '/manager/list'}" method="get">
-                        <div id="custom-search" class="top-search-bar col">
-                            <input width="125px" class="form-control" type="text" name="search" th:placeholder="#{managerList.label.search}">
-                        </div>
-                        <div class="col float-right">
-                            <button type="submit" class="btn btn-info m-t-10" data-th-text="#{button.label.search}"></button>
-                        </div>
-                    </form>
                 </div>
+                <form class="row" th:action="@{'/organization/' + ${orgId} + '/manager/list'}" method="get">
+                    <div id="custom-search" class="top-search-bar col">
+                        <input width="125px" class="form-control" type="text" name="search" th:placeholder="#{managerList.label.search}">
+                    </div>
+                    <div class="col float-right">
+                        <button type="submit" class="btn btn-info m-t-10" data-th-text="#{button.label.search}"></button>
+                    </div>
+                </form>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -53,6 +52,7 @@
                     </table>
                 </div>
             </div>
+
         </div>
         <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-start">
@@ -72,8 +72,10 @@
                 </li>
             </ul>
         </nav>
+
     </div>
 </div>
+
 </body>
 
 </html>

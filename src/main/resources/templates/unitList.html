@@ -37,6 +37,8 @@
                                 <tr th:each="unit : ${units}">
                                     <td th:text="${unit.id}">1</td>
                                     <td><a th:href="${unit.id}" > <p th:text="${unit.name}"/> </a> </td>
+                                    <td><a th:href="${unit.id}"><i class="fa fa-arrow-right"></i></a></td>
+
                                 </tr>
                             <!--    end of looping     -->
                             </tbody>

@@ -27,6 +27,7 @@ public class OrderController {
     private final OrderMaterialRestController orderMaterialRestController;
     private final ClientRestController clientRestController;
     private List<RawMaterialShortModel> materialsName;
+    private Long orgId;
 
     public OrderController(OrderService orderService, OrderMaterialRestController orderMaterialRestController, ClientRestController clientRestController) {
         this.orderService = orderService;
@@ -50,7 +51,7 @@ public class OrderController {
                           @PageableDefault(7) Pageable pageable, Model model) {
         UserPrincipal user = getUser();
         System.out.println("Test--------"+user.getOrganization().getId());
-        Page<OrderModel> orders = orderService.findAllByOrgIdAndByNameOrDescription(user.getOrganization().getId(),search != null ? search.toLowerCase() : "", pageable);
+        Page<OrderModel> orders = orderService.findAllByOrgIdAndByNameOrDescriptionManager(user.getOrganization().getId(),search != null ? search.toLowerCase() : "", pageable);
         model.addAttribute("orgId", user.getOrganization().getId());
         model.addAttribute("search", search);
         model.addAttribute("orders", orders);
@@ -67,7 +68,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "{orgId}/order/{orderId}")
-    public String getOrderDetailPage(@PathVariable("orderId") Long orderId,@PathVariable("orgId") Long orgId, Model model) {
+    public String getOrderDetailPage(@PathVariable("orderId") Long orderId,@PathVariable(value = "orgId", required = false) Long orgId, Model model) {
         OrderModel order = orderService.getById(orderId);
         model.addAttribute("order", order);
         model.addAttribute("orgId", orgId);

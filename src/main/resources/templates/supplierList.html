@@ -37,6 +37,8 @@
                                 <tr th:each="supplier : ${suppliers}">
                                     <td th:text="${supplier.id}">1</td>
                                     <td><a th:href="${supplier.id}" > <p th:text="${supplier.name}"/> </a> </td>
+                                    <td><a th:href="${supplier.id}"><i class="fa fa-arrow-right"></i></a></td>
+
                                 </tr>
                             <!--    end of looping     -->
                             </tbody>

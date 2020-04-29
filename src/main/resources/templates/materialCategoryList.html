@@ -37,6 +37,7 @@
                                 <tr th:each="category : ${categories}">
                                     <td th:text="${category.id}">1</td>
                                     <td><a th:href="${category.id}" > <p th:text="${category.name}"/> </a> </td>
+                                    <td><a th:href="${category.id}"><i class="fa fa-arrow-right"></i></a></td>
                                 </tr>
                             <!--    end of looping     -->
                             </tbody>

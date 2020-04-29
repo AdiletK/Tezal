@@ -18,11 +18,12 @@
                         <h3 class="w-75 p-3" data-th-text="#{order.label.header.title}"></h3>
                     </div>
                     <div class="col-md-2 float-right">
-                        <a sec:authorize="hasRole('ADMIN')" class="btn btn-success m-t-10" href="form"
+                        <a sec:authorize="hasAnyRole('ADMIN','CASHIER')" class="btn btn-success m-t-10" href="form"
                            data-th-text="#{button.label.create}"></a>
                         <a sec:authorize="hasRole('MANAGER')" class="btn btn-success m-t-10"
                            th:href="@{'/organization/' + ${orgId} + '/order/form'}"
                            data-th-text="#{button.label.create}"></a>
+
                     </div>
                 </div>
                 <form sec:authorize="hasAnyRole('ADMIN','MANAGER')" class="row" th:action="@{'/organization/' + ${orgId} + '/order/list'}" method="get">
@@ -62,7 +63,8 @@
                             <td th:text="${id.index+1}">1</td>
                             <td th:text="${order.clientFirstName} + ' ' + ${order.clientLastName}"> </td>
                             <td th:text="${order.updatedDate}"> </td>
-                            <td align="center"><a th:href="${order.id}+'/material/list'"><i class="far fa-bookmark"></i></a></td>
+                            <td sec:authorize="hasAnyRole('ADMIN','MANAGER')" align="center"><a th:href="'/organization/' + ${orgId} + '/order/'+${order.id}+'/material/list'"><i class="far fa-bookmark"></i></a></td>
+                            <td sec:authorize="hasRole('CASHIER')" align="center"><a th:href="${order.id}+'/material/list'"><i class="far fa-bookmark"></i></a></td>
 
                             <td sec:authorize="hasRole('ADMIN')" th:text="${order.getOrdersStatus()}"> </td>
                             <td sec:authorize="hasRole('MANAGER')">
@@ -107,14 +109,16 @@
                                 </div>
                             </td>
 
-                            <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"><a th:href="${order.id}"><i class="fa fa-arrow-right"></i></a></td>
+                            <td sec:authorize="hasRole('ADMIN')"><a th:href="${order.id}"><i class="fa fa-arrow-right"></i></a></td>
+                            <td sec:authorize="hasRole('MANAGER')"><a th:href="'/organization/' + ${orgId} + '/order/'+${order.id}"><i class="fa fa-arrow-right"></i></a></td>
 
                         </tr>
                         </tbody>
                     </table>
                 </div>
         </div>
-        <nav aria-label="Page navigation example" class="m-l-20">
+    </div>
+        <nav aria-label="Page navigation example" >
             <ul class="pagination justify-content-start">
                 <li th:if="${orders.hasPrevious()}" class="page-item">
                     <a class="page-link" th:href="'/organization/' + ${orgId} + '/order/list?search='+${search}+'&page='+${orders.number-1}" tabindex="-1" ><i class="fa fa-chevron-left"></i></a>
@@ -132,7 +136,7 @@
                 </li>
             </ul>
         </nav>
-    </div>
+
     </div>
 </div>
 <script>

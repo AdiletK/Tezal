@@ -1,7 +1,7 @@
 package kg.tezal.tezal_back.config;
 
 
-//import kg.tezal.tezal_back.service.security.jwt.JwtAuthenticationTokenFilter;
+import kg.tezal.tezal_back.service.security.jwt.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -24,33 +24,33 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan(basePackages = "kg.nurtelecom.cashbackapi")
+@ComponentScan(basePackages = "kg.tezal.tezal_back")
 public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-//    @Configuration
-//    @Order(1)
-//    public static class RestApiSecurityConfig extends WebSecurityConfigurerAdapter {
-////        @Autowired
-////        private JwtAuthenticationTokenFilter jwtAuthFilter;
-//
-//        @Override
-//        protected void configure(HttpSecurity http) throws Exception {
-//            http
-//                    .csrf().disable()
-//                    .antMatcher("/api/**")
-//                    .authorizeRequests()
-//                    .antMatchers("/api/authenticate").permitAll()
-//                    .antMatchers("/api/**").permitAll()
-//                    .and()
-//                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        }
-//    }
+    @Configuration
+    @Order(1)
+    public static class RestApiSecurityConfig extends WebSecurityConfigurerAdapter {
+        @Autowired
+        private JwtAuthenticationTokenFilter jwtAuthFilter;
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .csrf().disable()
+                    .antMatcher("/api/**")
+                    .authorizeRequests()
+                    .antMatchers("/api/authenticate").permitAll()
+                    .antMatchers("/api/**").permitAll()
+                    .and()
+                    .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+            http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        }
+    }
 
     @Configuration
     @Order(2)
