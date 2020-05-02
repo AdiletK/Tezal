@@ -66,6 +66,29 @@ public class RateServiceImpl implements RateService {
         return getRate(rateModel, rate);
     }
 
+    @Override
+    public boolean isEnoughOrderInStock(Long orgId, Long matId, Float count) {
+        RateModel rateModel = rateRepository.getRateByOrgIdAndRawMaterial(orgId, matId);
+        return rateModel.getQuantityInStock() >= count;
+    }
+
+    @Override
+    public void decreaseAmountMaterial(Long orgId, Long matId, Float count) {
+        RateModel rateModel = rateRepository.getRateByOrgIdAndRawMaterial(orgId, matId);
+        rateModel.setQuantityInStock(rateModel.getQuantityInStock() - count);
+        putById(rateModel.getId(), rateModel);
+        rateRepository.flush();
+    }
+
+    @Override
+    public void increaseAmountMaterial(Long orgId, Long matId, Float count) {
+        RateModel rateModel = rateRepository.getRateByOrgIdAndRawMaterial(orgId, matId);
+        System.out.println(rateModel.getId() + "-------------------" + rateModel.getQuantityInStock() + " " + count);
+        rateModel.setQuantityInStock(rateModel.getQuantityInStock() + count);
+        putById(rateModel.getId(), rateModel);
+        rateRepository.flush();
+    }
+
     private Rate getRate(RateModel rateModel, Rate rate) {
         rate.setQuantityInStock(rateModel.getQuantityInStock());
         rate.setOrganization(organizationRestController.getOrganizationById(rateModel.getOrganizationId()));

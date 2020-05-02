@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -31,5 +32,5 @@ public class PurchaseModel {
 
     private Long supplierId;
     private String supplierName;
-
+    private LocalDateTime date;
 }

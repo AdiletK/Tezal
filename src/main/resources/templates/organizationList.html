@@ -37,7 +37,7 @@
                                 <th class="border-0" data-th-text="#{organizationList.label.img}"></th>
                                 <th class="border-0" data-th-text="#{label.org_name}"></th>
                                 <th class="border-0" data-th-text="#{organizationList.label.materialCategory}"></th>
-                                <th class="border-0" data-th-text="#{label.status}"></th>
+<!--                                <th class="border-0" data-th-text="#{label.status}"></th>-->
                                 <th class="border-0" data-th-text="#{label.profile}"></th>
                                 <th class="border-0" data-th-text="#{label.filial}"></th>
                                 <th class="border-0" data-th-text="#{label.rates}"></th>
@@ -55,14 +55,14 @@
                                     </td>
                                     <td th:text="${org.name}"> Organization Name </td>
                                     <td th:text="${org.categoryName}">Organization Category</td>
-                                    <td>
-                                    <div class="switch-button switch-button-xs">
-                                    <input type="checkbox" class="switch-button switch-button-xs"
-                                               th:checked=${org.status} name="status"
-                                               th:id="${org.id}"><span>
-                                                <label th:for="${org.id}"></label></span>
-                                    </div>
-                                    </td>
+<!--                                    <td>-->
+<!--&lt;!&ndash;                                    <div class="switch-button switch-button-xs">&ndash;&gt;-->
+<!--&lt;!&ndash;                                    <input type="checkbox" class="switch-button switch-button-xs"&ndash;&gt;-->
+<!--&lt;!&ndash;                                               th:checked=${org.status} name="status"&ndash;&gt;-->
+<!--&lt;!&ndash;                                               th:id="${org.id}" style="visibility: hidden;"><span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <label th:for="${org.id}"></label></span>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--                                    </td>-->
                                     <td><a th:href="${org.id}"><i class="fas fa-address-book"></i></a></td>
                                     <td><a th:href="@{'/organization/' + ${org.id} + '/filial/list'}"><i class=" fas fa-building"></i></a></td>
                                     <td><a  th:href="@{'/organization/' + ${org.id} + '/rate/list'}"><i class="far fa-money-bill-alt"></i></a> </td>

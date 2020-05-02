@@ -118,9 +118,9 @@ INSERT INTO raw_material(id, amount_in_block, create_date, description, name, un
 
 INSERT INTO orders(id, create_date, deadline_date, orders_status, update_date, client_id, organization_id, users_id) VALUES ((SELECT nextval('orders_seq')),'10-10-20', '10-11-20', 'AWAITING', '10-10-20',1,1,3);
 
-INSERT INTO orders(id, create_date, deadline_date, orders_status, update_date, client_id, organization_id, users_id) VALUES ((SELECT nextval('orders_seq')),'10-10-20', '10-11-20', 'ACCEPT', '10-10-20',1,1,3);
+INSERT INTO orders(id, create_date, deadline_date, orders_status, update_date, client_id, organization_id, users_id) VALUES ((SELECT nextval('orders_seq')),'10-10-20', '10-11-20', 'ACCEPT', '10-10-20',2,1,3);
 
-INSERT INTO orders(id, create_date, deadline_date, orders_status, update_date, client_id, organization_id, users_id) VALUES ((SELECT nextval('orders_seq')),'10-10-20', '10-11-20', 'READY', '10-10-20',1,1,3);
+INSERT INTO orders(id, create_date, deadline_date, orders_status, update_date, client_id, organization_id, users_id) VALUES ((SELECT nextval('orders_seq')),'10-10-20', '10-11-20', 'READY', '10-10-20',3,1,3);
 
 INSERT INTO orders(id, create_date, deadline_date, orders_status, update_date, client_id, organization_id, users_id) VALUES ((SELECT nextval('orders_seq')),'10-10-20', '10-11-20', 'DELIVERED', '10-10-20',1,1,3);
 

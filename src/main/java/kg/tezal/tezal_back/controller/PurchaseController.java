@@ -1,5 +1,6 @@
 package kg.tezal.tezal_back.controller;
 
+import kg.tezal.tezal_back.apicontroller.RateRestController;
 import kg.tezal.tezal_back.apicontroller.RawMaterialRestController;
 import kg.tezal.tezal_back.apicontroller.SupplierRestController;
 import kg.tezal.tezal_back.entity.Organization;
@@ -28,13 +29,16 @@ public class PurchaseController {
     private final PurchaseService purchaseService;
     private final RawMaterialRestController materialRestController;
     private final SupplierRestController supplierRestController;
+    private final RateRestController rateRestController;
+
     private List<RawMaterialShortModel> materialList;
     private List<Supplier> supplierList;
 
-    public PurchaseController(PurchaseService purchaseService, RawMaterialRestController materialRestController, SupplierRestController supplierRestController) {
+    public PurchaseController(PurchaseService purchaseService, RawMaterialRestController materialRestController, SupplierRestController supplierRestController, RateRestController rateRestController) {
         this.purchaseService = purchaseService;
         this.materialRestController = materialRestController;
         this.supplierRestController = supplierRestController;
+        this.rateRestController = rateRestController;
     }
 
     @GetMapping(value = "{orgId}/purchase/list")

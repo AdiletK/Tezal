@@ -37,8 +37,14 @@ public class OrderMaterialController {
                                              Model model){
         Order orderModel = orderRestController.getOrderById(orderId);
         String client = orderModel.getClient().getFirstName() + " " + orderModel.getClient().getLastName();
-        model.addAttribute("materials", orderMaterialService.findAllByOrgId(orderId));
+        List<OrderMaterialModel> list = orderMaterialService.findAllByOrgId(orderId);
+        Double sum = 0.0;
+        for (OrderMaterialModel order : list) {
+            sum += order.getSum();
+        }
+        model.addAttribute("materials", list);
         model.addAttribute("client", client);
+        model.addAttribute("amount_sum", sum);
         return "orderMaterialList";
     }
     @GetMapping(value = "{matId}")

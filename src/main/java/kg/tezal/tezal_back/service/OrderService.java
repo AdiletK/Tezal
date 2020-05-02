@@ -2,6 +2,7 @@ package kg.tezal.tezal_back.service;
 
 import kg.tezal.tezal_back.entity.Order;
 import kg.tezal.tezal_back.model.OrderModel;
+import kg.tezal.tezal_back.model.SalesShortModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,8 +15,12 @@ public interface OrderService {
 
     List<OrderModel> findAllByOrgId(Long id);
 
+    List<SalesShortModel> findAllDeliveredByOrgIdWithDate(Long id, String dateFrom, String dateTo);
+
     Page<OrderModel> findAllByOrgIdAndByNameOrDescription(Long id, String search, Pageable pageable);
+
     Page<OrderModel> findAllByOrgIdAndByNameOrDescriptionManager(Long id, String search, Pageable pageable);
+
     Page<OrderModel> findAllDeliveredByOrgIdAndByNameOrDescription(Long id, String search, Pageable pageable);
 
     Page<OrderModel> findAllByOrgIdAndByNameOrDescriptionForCashier(Long id, String search, Pageable pageable);

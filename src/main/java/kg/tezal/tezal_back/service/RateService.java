@@ -22,4 +22,9 @@ public interface RateService {
 
     Rate putById(Long id, RateModel rateModel);
 
+    boolean isEnoughOrderInStock(Long orgId, Long matId, Float count);
+
+    void decreaseAmountMaterial(Long orgId, Long matId, Float count);
+
+    void increaseAmountMaterial(Long orgId, Long matId, Float count);
 }

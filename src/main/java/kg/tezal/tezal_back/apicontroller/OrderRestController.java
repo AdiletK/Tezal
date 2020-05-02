@@ -2,6 +2,7 @@ package kg.tezal.tezal_back.apicontroller;
 
 import kg.tezal.tezal_back.entity.Order;
 import kg.tezal.tezal_back.model.OrderModel;
+import kg.tezal.tezal_back.model.SalesShortModel;
 import kg.tezal.tezal_back.service.OrderService;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,12 @@ public class OrderRestController {
     @PutMapping("/{id}")
     public Order putOrder(@PathVariable("id") Long id, @RequestBody OrderModel orderModel) {
         return orderService.putById(id, orderModel);
+    }
+
+    @GetMapping("/list/filter/{orgId}")
+    public List<SalesShortModel> findAllDeliveredByOrgIdWithFilter(@PathVariable Long orgId, @RequestParam("dateFrom")String dateFrom,
+                                                                   @RequestParam("dateTo") String dateTo){
+        return orderService.findAllDeliveredByOrgIdWithDate(orgId, dateFrom, dateTo);
     }
 
     @PostMapping()

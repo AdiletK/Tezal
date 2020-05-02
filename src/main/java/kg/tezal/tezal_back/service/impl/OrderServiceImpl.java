@@ -3,11 +3,14 @@ package kg.tezal.tezal_back.service.impl;
 import kg.tezal.tezal_back.apicontroller.ClientRestController;
 import kg.tezal.tezal_back.apicontroller.OrganizationRestController;
 import kg.tezal.tezal_back.apicontroller.UserRestController;
+import kg.tezal.tezal_back.dao.ReportDao;
 import kg.tezal.tezal_back.entity.Order;
 import kg.tezal.tezal_back.model.OrderModel;
+import kg.tezal.tezal_back.model.SalesShortModel;
 import kg.tezal.tezal_back.repository.OrderRepository;
 import kg.tezal.tezal_back.service.OrderService;
 import kg.tezal.tezal_back.utils.RecordNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,6 +23,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrganizationRestController organizationRestController;
     private final UserRestController userRestController;
     private final ClientRestController clientRestController;
+    @Autowired
+    private ReportDao reportDao;
 
     public OrderServiceImpl(OrderRepository orderRepository, OrganizationRestController organizationRestController, UserRestController userRestController, ClientRestController clientRestController) {
         this.orderRepository = orderRepository;
@@ -43,6 +48,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderModel> findAllByOrgId(Long id) {
         return orderRepository.findAllByOrgId(id);
+    }
+
+    @Override
+    public List<SalesShortModel> findAllDeliveredByOrgIdWithDate(Long id, String dateFrom, String dateTo) {
+        return reportDao.getSalesByOrgId(id, dateFrom, dateTo);
     }
 
     @Override

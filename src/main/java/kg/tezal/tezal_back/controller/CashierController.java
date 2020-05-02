@@ -34,7 +34,9 @@ public class CashierController {
     @Autowired
     private RawMaterialRestController materialRestController;
     @Autowired
-    ClientRestController clientRestController;
+    private ClientRestController clientRestController;
+    @Autowired
+    private RateRestController rateRestController;
 
     private List<RawMaterialShortModel> materialsName;
 
@@ -61,8 +63,14 @@ public class CashierController {
     public String materialPage(@PathVariable Long id, Model model){
         Order orderModel = orderRestController.getOrderById(id);
         String client = orderModel.getClient().getFirstName() + " " + orderModel.getClient().getLastName();
+        List<OrderMaterialModel> list = orderMaterialRestController.getAll(id);
+        Double sum = 0.0;
+        for (OrderMaterialModel order : list) {
+            sum += order.getSum();
+        }
         model.addAttribute("materials", orderMaterialRestController.getAll(id));
         model.addAttribute("client", client);
+        model.addAttribute("amount_sum", sum);
         return "orderMaterialList";
     }
 
@@ -157,7 +165,15 @@ public class CashierController {
         }
         orderMaterialModel.setOrderId(orderId);
         orderMaterialRestController.postOrderMaterial(orderMaterialModel);
+        rateRestController.decreaseAmountMaterial(orgId, orderMaterialModel.getId(), orderMaterialModel.getCount().floatValue());
         return "redirect:/cashier/" + orderId + "/material/list";
+    }
+    @ResponseBody
+    @GetMapping("/check")
+    public boolean isEnoughOrderInStock(@RequestParam("matId") Long matId,
+                                        @RequestParam("amount") Float count) {
+        if (orgId == null){getUserDetails();}
+        return rateRestController.isEnoughOrderInStock(orgId, matId, count);
     }
 
     @GetMapping("/{orderId}/material/delete/{id}")
@@ -180,6 +196,7 @@ public class CashierController {
         model.addAttribute("order", order);
         return "orderForm";
     }
+
     @PostMapping(value = "/create")
     public String createOrder(@Valid @ModelAttribute("order") OrderModel orderModel,
                               BindingResult result, Model model) {
