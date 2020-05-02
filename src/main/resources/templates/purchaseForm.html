@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <label class="text-dark font-bold col-form-label col-form-label" for="input-select" data-th-text="#{rate.label.product}"></label>
                             <select th:field="*{rawMaterialId}" class="form-control" id="input-select" >
-                                <option th:each="material : ${materials}" th:value="${material.id}" th:text="${material.name}"></option>
+                                <option th:each="material : ${materials}" th:value="${material.id}" th:text="${material.name}+' '+ ${material.volume}"></option>
                             </select>
                         </div>
                         <div class="form-group">

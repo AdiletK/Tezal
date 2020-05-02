@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 
 @Getter
@@ -26,11 +25,11 @@ public class PurchaseModel {
 
     private Long rawMaterialId;
     private String rawMaterialName;
+    private Float volume;
 
     private Long organizationId;
     private String organizationName;
 
     private Long supplierId;
     private String supplierName;
-    private LocalDateTime date;
 }

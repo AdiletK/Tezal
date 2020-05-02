@@ -52,12 +52,12 @@
                         <tbody>
                         <tr th:each="purchase : ${purchases}">
                             <td th:text="${purchase.id}">1</td>
-                            <td th:text="${purchase.rawMaterialName}"> </td>
+                            <td th:text="${purchase.rawMaterialName} + ' ' + ${purchase.volume}"> </td>
                             <td th:text="${purchase.supplierName}"> </td>
                             <td th:text="${purchase.priceForOne}"> </td>
                             <td th:text="${purchase.count}"> </td>
                             <td th:text="${purchase.summ}"> </td>
-                            <td><a th:href="${purchase.id}"><i class="fa fa-arrow-right"></i></a></td>
+                            <td><a th:href="'/organization/' + ${orgId} + '/purchase/'+${purchase.id}"><i class="fa fa-arrow-right"></i></a></td>
 
                         </tr>
                         </tbody>

@@ -12,13 +12,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
-    @Query("select new kg.tezal.tezal_back.model.PurchaseModel(purchase.id, purchase.count, purchase.summ, purchase.publisher, purchase.barCode, purchase.priceForOne, purchase.rawMaterial.id, purchase.rawMaterial.name, purchase.organization.id, purchase.organization.name,purchase.supplier.id, purchase.supplier.name, purchase.createDate) FROM Purchase purchase WHERE purchase.organization.id = :id  ORDER BY purchase.organization.id ASC")
+    @Query("select new kg.tezal.tezal_back.model.PurchaseModel(purchase.id, purchase.count, purchase.summ, purchase.publisher, purchase.barCode, purchase.priceForOne, purchase.rawMaterial.id, purchase.rawMaterial.name, purchase.rawMaterial.volume , purchase.organization.id, purchase.organization.name,purchase.supplier.id, purchase.supplier.name) FROM Purchase purchase WHERE purchase.organization.id = :id  ORDER BY purchase.organization.id ASC")
     List<PurchaseModel> findAllByOrgId(@Param("id") Long id);
 
-    @Query("select new kg.tezal.tezal_back.model.PurchaseModel(purchase.id, purchase.count, purchase.summ, purchase.publisher, purchase.barCode, purchase.priceForOne, purchase.rawMaterial.id, purchase.rawMaterial.name, purchase.organization.id, purchase.organization.name,purchase.supplier.id, purchase.supplier.name, purchase.createDate) FROM Purchase purchase WHERE purchase.id = :id ")
+    @Query("select new kg.tezal.tezal_back.model.PurchaseModel(purchase.id, purchase.count, purchase.summ, purchase.publisher, purchase.barCode, purchase.priceForOne, purchase.rawMaterial.id, purchase.rawMaterial.name, purchase.rawMaterial.volume , purchase.organization.id, purchase.organization.name,purchase.supplier.id, purchase.supplier.name) FROM Purchase purchase WHERE purchase.id = :id ")
     PurchaseModel getPurchaseById(@Param("id") Long id);
 
-    @Query("select new kg.tezal.tezal_back.model.PurchaseModel(purchase.id, purchase.count, purchase.summ, purchase.publisher, purchase.barCode, purchase.priceForOne, purchase.rawMaterial.id, purchase.rawMaterial.name, purchase.organization.id, purchase.organization.name,purchase.supplier.id, purchase.supplier.name, purchase.createDate) FROM Purchase purchase WHERE " +
+    @Query("select new kg.tezal.tezal_back.model.PurchaseModel(purchase.id, purchase.count, purchase.summ, purchase.publisher, purchase.barCode, purchase.priceForOne, purchase.rawMaterial.id, purchase.rawMaterial.name, purchase.rawMaterial.volume , purchase.organization.id, purchase.organization.name,purchase.supplier.id, purchase.supplier.name) FROM Purchase purchase WHERE " +
             "purchase.organization.id = :id and (lower(purchase.rawMaterial.name) like %:search% or lower(purchase.rawMaterial.description) like %:search% or lower(purchase.supplier.name) like %:search%) ORDER BY purchase.id ASC")
     Page<PurchaseModel> findAllByOrgIdAndByNameOrDescription(@Param("id") Long id, String search, Pageable pageable);
 
