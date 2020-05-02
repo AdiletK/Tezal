@@ -102,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
     private Order getOrder(OrderModel orderModel, Order order) {
         order.setClient(clientRestController.getClientById(orderModel.getClientId()));
         order.setOrdersStatus(orderModel.getOrdersStatus());
-        order.setUser(userRestController.getUserById(orderModel.getUserId()));
+        order.setUser(orderModel.getUserId() != null ? userRestController.getUserById(orderModel.getUserId()) : null );
         order.setOrganization(organizationRestController.getOrganizationById(orderModel.getOrganizationId()));
         return orderRepository.save(order);
     }

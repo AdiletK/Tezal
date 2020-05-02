@@ -40,8 +40,9 @@ public class OrderMaterialRestController {
     }
 
     @PostMapping()
-    public OrderMaterial postOrderMaterial(@RequestBody OrderMaterialModel orderMaterialModel) {
-        return materialService.create(orderMaterialModel);
+    public OrderMaterialModel postOrderMaterial(@RequestBody OrderMaterialModel orderMaterialModel) {
+        orderMaterialModel.setId(materialService.create(orderMaterialModel).getId());
+        return orderMaterialModel;
     }
 
     @DeleteMapping("/{id}")

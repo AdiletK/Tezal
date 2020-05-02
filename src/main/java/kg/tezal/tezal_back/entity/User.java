@@ -1,5 +1,6 @@
 package kg.tezal.tezal_back.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,7 @@ public class User {
     /**
      * User Role
      */
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 //    @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -45,6 +47,7 @@ public class User {
     /**
      * User Organization
      */
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "organization_id")
     private Organization organization;
