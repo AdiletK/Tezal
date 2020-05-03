@@ -33,7 +33,7 @@ public class ReportDao {
 
 
     public List<PurchaseShortModel> getPurchaseByOrgId(Long orgId, String dateFrom, String dateTo) {
-        List<PurchaseShortModel> arrayList = new ArrayList();
+        List<PurchaseShortModel> arrayList = new ArrayList<>();
         Connection connection = null;
         Statement stmt = null;
         String sql;
@@ -91,7 +91,7 @@ public class ReportDao {
     }
 
     public List<SalesShortModel> getSalesByOrgId(Long orgId, String dateFrom, String dateTo) {
-        List<SalesShortModel> arrayList = new ArrayList();
+        List<SalesShortModel> arrayList = new ArrayList<>();
         Connection connection = null;
         Statement stmt = null;
         String sql;
