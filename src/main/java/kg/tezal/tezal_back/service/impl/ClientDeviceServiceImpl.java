@@ -29,6 +29,9 @@ public class ClientDeviceServiceImpl implements ClientDeviceService {
     }
 
     public ClientDevice create(ClientDevice clientDevice) {
+        if (findByPhone(clientDevice.getPhoneNumber()) != null){
+            throw new RecordNotFoundException("Record already exist with number:" + clientDevice.getPhoneNumber());
+        }
         return clientDeviceRepository.save(clientDevice);
     }
 

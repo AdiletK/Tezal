@@ -65,7 +65,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         if(organizationModelImage.getImage() != null && organizationModelImage.getImage().getContentType().contains("image"))
             organization.setImage(UtilBase64Image.encoder(organizationModelImage.getImage()));
 
-        organization.setStatus(organizationModelImage.getStatus());
+        organization.setStatus(organizationModelImage.getStatus() != null);
         organization.setOrgCategory(orgCategoryRestController.getOrgCategoryById(organizationModelImage.getCategoryId()));
         organization.setDescription(organizationModelImage.getDescription());
         Long id = organizationRepository.save(organization).getId();
@@ -88,10 +88,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     public void changeStatus(Long id) {
         Organization organization = organizationRepository.findById(id).orElseThrow(() ->
                 new RecordNotFoundException("Record not found with id:" + id));
-        if (!organization.isStatus()){
-            organization.setStatus(true);
-        } else
-            organization.setStatus(false);
+        organization.setStatus(!organization.isStatus());
         organizationRepository.save(organization);
     }
 
@@ -113,17 +110,16 @@ public class OrganizationServiceImpl implements OrganizationService {
                 .map(newOrganization -> {
                     newOrganization.setDescription(organizationModelImage.getDescription());
                     newOrganization.setName(organizationModelImage.getName());
-                    if (organizationModelImage.getImage() != null && organizationModelImage.getImage().getContentType().contains("image"))
+                    if (organizationModelImage.getImage() != null && organizationModelImage.getImage().getContentType().contains("image")) {
                         newOrganization.setImage(UtilBase64Image.encoder(organizationModelImage.getImage()));
+                        System.out.println("-----------------------Image");
+                    }
 //                    newOrganization.setClients(organization.getClients());
 //                    if (organizationModelImage.getStatus()==null)
 //                        newOrganization.setStatus(false);
 //                    else
 //                        newOrganization.setStatus(true);
-                    if (organizationModelImage.getStatus()!=null)
-                        newOrganization.setStatus(true);
-                    else
-                        newOrganization.setStatus(false);
+                    newOrganization.setStatus(organizationModelImage.getStatus() != null);
 
                     Long catId = organizationModelImage.getCategoryId();
                     if (catId != null) {
@@ -152,6 +148,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     public List<OrganizationModel> findAllOrganizationList() {
         return organizationRepository.findAllOrganizationList();
+    }
+    public List<OrganizationModel> findAllOrganizationListByCategoryId(Long catId) {
+        return organizationRepository.findAllOrganizationListByCategoryId(catId);
     }
 
     public List<OrganizationModel> getOrganizationListByClientId(Long id) {

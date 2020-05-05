@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Getter
 @Setter
@@ -21,28 +20,17 @@ public class ClientModelImage {
 
     private MultipartFile image;
 
-    @NotNull
-    @Size(min = 5, max = 255)
     private String personalCode;
 
-    @NotNull
-    @Size(min = 5, max = 255)
     private String firstName;
 
-    @NotNull
-    @Size(min = 5, max = 255)
     private String lastName;
 
-    @NotNull
-    @Size(min = 5, max = 255)
     private String patronymic;
 
-    @NotNull
     private ClientSex clientSex;
 
-    @NotNull
     private String nationality;
 
-    @NotNull
     private String locale;
 }

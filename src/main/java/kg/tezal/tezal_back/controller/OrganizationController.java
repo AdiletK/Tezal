@@ -94,7 +94,7 @@ public class OrganizationController {
     @GetMapping(value = "/form")
     public String organizationForm(Model model) {
         List<OrgCategoryModel> orgCategories = orgCategoryRestController.getAll();
-        OrganizationModel organization = new OrganizationModel();
+        OrganizationModelImage organization = new OrganizationModelImage();
         model.addAttribute("organization", organization);
         model.addAttribute("orgCategories", orgCategories);
         model.addAttribute("add", true);
@@ -108,10 +108,12 @@ public class OrganizationController {
         if (result.hasErrors()) {
             List<OrgCategoryModel> orgCategories = orgCategoryRestController.getAll();
             model.addAttribute(organizationModelImage);
+
             model.addAttribute("orgCategories", orgCategories);
             model.addAttribute("add", true);
             return "organizationForm";
         }
+        System.out.println(organizationModelImage.getImage().getName());
         organizationService.create(organizationModelImage);
         return "redirect:list";
     }
