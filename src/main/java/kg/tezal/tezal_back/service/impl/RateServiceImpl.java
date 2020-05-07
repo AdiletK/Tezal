@@ -43,6 +43,11 @@ public class RateServiceImpl implements RateService {
     }
 
     @Override
+    public List<RateModel> findAllByOrgIdCatId(Long id, Long catId) {
+        return rateRepository.findAllByOrgIdCatId(id, catId);
+    }
+
+    @Override
     public Page<RateModel> findAllByOrgIdAndByNameOrDescription(Long id, String search, Pageable pageable) {
         return rateRepository.findAllByOrgIdAndByNameOrDescription(id, search, pageable);
     }

@@ -24,6 +24,7 @@ public class RateModel {
 
     private Long rawMaterialId;
     private String rawMaterialName;
+    private String rawMaterialCategory;
 
     private Long organizationId;
     private String organizationName;

@@ -29,7 +29,6 @@ public interface OrganizationService {
     Organization putById(Long id, OrganizationModelImage organization);
 
     List<OrganizationModel> findAllOrganizationList();
-    List<OrganizationModel> findAllOrganizationListByCategoryId(Long catId);
 
     List<OrganizationModel> getOrganizationListByClientId(Long id);
 

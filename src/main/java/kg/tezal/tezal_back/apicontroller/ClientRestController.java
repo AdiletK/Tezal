@@ -47,7 +47,8 @@ public class ClientRestController {
 
     @PostMapping()
     public Client postClient(@RequestBody Client client) {
-        return clientService.create(client);
+        clientService.create(client);
+        return client;
     }
 
     @DeleteMapping("/{id}")

@@ -41,7 +41,7 @@
                         <label for="code" class="text-dark font-bold" data-th-text="#{clientDetailPage.label.personal_code}"></label>
                         <input id="code" type="text" class="form-control"
                                th:value="${client} ? ${client.personalCode} : ' '"
-                               th:field="*{personalCode}" required>
+                               th:field="*{personalCode}">
                         <p th:if="${#fields.hasErrors('personalCode')}" style="color:red;"
                            th:errors="*{personalCode}">Incorrect LP</p>
                     </div>
@@ -49,7 +49,7 @@
                         <label for="firstName" class="text-dark font-bold" data-th-text="#{clientDetailPage.label.first_name}"></label>
                         <input id="firstName" type="text" class="form-control"
                                th:value="${client} ? ${client.firstName} : ' '"
-                               th:field="*{firstName}" required>
+                               th:field="*{firstName}">
                         <p th:if="${#fields.hasErrors('firstName')}" style="color:red;"
                            th:errors="*{firstName}">Incorrect LP</p>
                     </div>
@@ -57,7 +57,7 @@
                         <label for="lastName" class="text-dark font-bold" data-th-text="#{clientDetailPage.label.last_name}"></label>
                         <input id="lastName" type="text" class="form-control"
                                th:value=" ${client} ? ${client.lastName} : '' "
-                               th:field="*{lastName}" required/>
+                               th:field="*{lastName}"/>
                         <p th:if="${#fields.hasErrors('lastName')}" style="color:red;"
                            th:errors="*{lastName}">Incorrect LP</p>
                     </div>
@@ -79,7 +79,7 @@
                     <div class="form-group">
                         <label for="nationality" class="text-dark font-bold" data-th-text="#{clientDetailPage.label.nationality}"></label>
                         <input id="nationality" type="text" class="form-control"
-                               th:value=" ${client} ? ${client.nationality} : '' " th:field="*{nationality}" required/>
+                               th:value=" ${client} ? ${client.nationality} : '' " th:field="*{nationality}"/>
                         <p th:if="${#fields.hasErrors('nationality')}" style="color:red;"
                            th:errors="*{nationality}">Incorrect LP</p>
                     </div>
@@ -89,7 +89,7 @@
                         <label for="locale" class="text-dark font-bold" data-th-text="#{clientDetailPage.label.locale}"></label>
                         <input id="locale" type="text" class="form-control"
                                th:value=" ${client} ? ${client.locale} : '' "
-                               th:field="*{locale}" required/>
+                               th:field="*{locale}"/>
                         <p th:if="${#fields.hasErrors('nationality')}" style="color:red;"
                            th:errors="*{nationality}">Incorrect LP</p>
                     </div>
