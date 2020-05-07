@@ -79,6 +79,9 @@ public class RawMaterialServiceImpl implements RawMaterialService {
         rawMaterial.setVolume(materialModel.getVolume());
         rawMaterial.setAmountInBlock(materialModel.getAmountInBlock());
         rawMaterial.setMaterialCategory(materialCategoryRestController.getMaterialCategoryById(materialModel.getMaterialCategoryId()));
-        return materialRepository.save(rawMaterial);
+        RawMaterial re = materialRepository.save(rawMaterial);
+        materialRepository.flush();
+        System.out.println("--------------------test");
+        return re;
     }
 }
