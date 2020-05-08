@@ -35,4 +35,6 @@ public interface OrganizationService {
     List<OrganizationModel> nextOrganizationListByClientIdAndCategoryId(Long clientId, Long categoryId, Long lastId, Integer limit);
 
     OrganizationModel getOrganizationById(Long id);
+
+    List<OrganizationModel> findAllOrganizationListByCategoryId(Long id);
 }

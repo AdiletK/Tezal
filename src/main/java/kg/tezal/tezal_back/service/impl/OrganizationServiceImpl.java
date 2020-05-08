@@ -160,4 +160,8 @@ public class OrganizationServiceImpl implements OrganizationService {
     public OrganizationModel getOrganizationById(Long id) {
         return organizationRepository.getOrganizationById(id);
     }
+
+    public List<OrganizationModel> findAllOrganizationListByCategoryId(Long catId) {
+        return organizationRepository.findAllOrganizationListByCategoryId(catId);
+    }
 }
