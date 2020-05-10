@@ -35,6 +35,11 @@ public class OrderRestController {
         return orderService.findAllByOrgId(orgId);
     }
 
+    @GetMapping("/all/client/{id}")
+    public List<OrderModel> getAllByClientId(@PathVariable("id")Long id) {
+        return orderService.findAllByClientId(id);
+    }
+
     @PutMapping("/{id}")
     public Order putOrder(@PathVariable("id") Long id, @RequestBody OrderModel orderModel) {
         return orderService.putById(id, orderModel);
