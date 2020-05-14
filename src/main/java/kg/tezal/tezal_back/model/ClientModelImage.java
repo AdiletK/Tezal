@@ -33,16 +33,12 @@ public class ClientModelImage {
     @Size(min = 5, max = 255)
     private String lastName;
 
-    @NotNull
     @Size(min = 5, max = 255)
     private String patronymic;
 
-    @NotNull
     private ClientSex clientSex;
 
-    @NotNull
     private String nationality;
 
-    @NotNull
     private String locale;
 }

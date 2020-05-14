@@ -1,10 +1,10 @@
 package kg.tezal.tezal_back.model;
 
 //<<<<<<< Updated upstream
+
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Size;
 import java.util.Set;
 //=======
 //import lombok.AllArgsConstructor;
@@ -26,10 +26,8 @@ public class OrganizationModelImage {
     private MultipartFile image;
     private Set<MultipartFile> images;
     private Boolean status;
-    @Size(min = 5, max = 255)
     private String name;
     private Long categoryId;
     private String categoryName;
-    @Size(min = 50, max = 255)
     private String description;
 }

@@ -37,7 +37,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-6" >
-                        <label class="text-dark font-bold" for="dateFrom">Date From:</label></br>
+                        <label class="text-dark font-bold" for="dateFrom" data-th-text="#{label.date_from}">Date From:</label></br>
                         <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
                             <input type="text" name="dateFrom" class="form-control datetimepicker-input"
                                    id="dateFrom" th:value="${dateFrom} ? ${dateFrom}" required>
@@ -49,7 +49,7 @@
                         <p id="dateFromEr" style="color:red;" ></p>
                     </div>
                     <div class="col-sm-6">
-                        <label class="text-dark font-bold" for="dateTo">Date To:</label></br>
+                        <label class="text-dark font-bold" for="dateTo" data-th-text="#{label.date_to}">Date To:</label></br>
                         <div class="input-group date" id="datetimepicker5" data-target-input="nearest">
                             <input type="text" name="dateTo" class="form-control datetimepicker-input"
                                    id="dateTo" th:value="${dateTo} ? ${dateTo}" required>
@@ -86,7 +86,6 @@
                                         moneySum+=data[i].summ;
                                     }
 
-                                    alert(countSum + ' ' + moneySum)
                                     printJS({
                                         printable: data,
                                         properties: [
@@ -99,7 +98,7 @@
                                             { field: 'date', displayName: 'Дата'}
                                         ],
                                         type: 'json',
-                                        header: ('Общее кол-во товаров:'+countSum+'\n Cумма:'+moneySum )
+                                        header: ('Покупки.          Общее кол-во товаров:'+countSum+'\n Cумма:'+moneySum )
                                     });
                                 }
                             },
@@ -137,7 +136,7 @@
                                             { field: 'date', displayName: 'Дата'}
                                         ],
                                         type: 'json',
-                                        header: ('Общее кол-во товаров:'+countSum+'\n Cумма:'+moneySum )
+                                        header: ('Продажи.          Общее кол-во товаров:'+countSum+'\n Cумма:'+moneySum )
 
                                     });
                                 }
