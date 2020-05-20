@@ -42,19 +42,17 @@
                     $(document).ready(function() {
                         const orgId = document.getElementById("org_id").value;
                         const d = new Date()
-                        const dateFrom = d.getDate()+'-'+(d.getMonth()+1) + '-' + (d.getFullYear() - 1);
-                        const dateTo = d.getDate()+'-'+(d.getMonth()+1) + '-' + d.getFullYear();
+                        const dateFrom = (d.getFullYear() - 1) +'-'+(d.getMonth()+1) + '-' + d.getDate();
+                        const dateTo = (d.getFullYear()) +'-'+(d.getMonth()+1) + '-' + d.getDate();
+                        console.log(dateFrom + ' ' + dateTo)
                         $.ajax({
                             url: "/dashboard/order/" + orgId + "?dateFrom=" + dateFrom + "&dateTo="+ dateTo,
                             type: "GET",
                             dataType: 'json',
                             contentType: "application/json",
                             success: function (data) {
-                                if (!Object.keys(data).length){
-                                    alert("За последний год ничего не найдено!")
-                                } else {
-                                   showOrderChart(data)
-                                }
+                                console.log(data)
+                                showOrderChart(data)
                             },
                             error: function (request, error) {
                                 alert("Что-то пошло не так!");
@@ -67,11 +65,7 @@
                             dataType: 'json',
                             contentType: "application/json",
                             success: function (data) {
-                                if (!Object.keys(data).length){
-                                    alert("За последний год ничего не найдено!")
-                                } else {
                                     showSoldProduct(data)
-                                }
                             },
                             error: function (request, error) {
                                 alert("Что-то пошло не так!");
@@ -88,6 +82,7 @@
                     }
 
                     const month = [
+                        '',
                         'Январь',
                         'Февраль',
                         'Март',
@@ -120,10 +115,10 @@
                         var soldChart = new Chart(ctx, {
                             type: 'bar',
                             data: {
-                                labels: data.map((el) => el.name),
+                                labels: Object.keys(data).length ? data.map((el) => el.name) : 'Нет активных действий!',
                                 datasets: [{
                                     label: 'Часто продаваемые товары',
-                                    data: data.map((el) => el.count),
+                                    data: Object.keys(data).length ? data.map((el) => el.count) : 0,
                                     backgroundColor: colors.slice(0,data.length),
                                     borderColor: colors.slice(0, data.length),
                                     borderWidth: 0.5
@@ -146,10 +141,10 @@
                             type: 'line',
                             fill: false,
                             data: {
-                                labels: data.map((el) => month[el.name]),
+                                labels: Object.keys(data).length ? data.map((el) => month[el.name]) :'',
                                 datasets: [{
-                                    label: 'Статистика продаж за последний год (шт)',
-                                    data: data.map((el) => el.count),
+                                    label: 'Кол-во продаж за последний год ',
+                                    data: Object.keys(data).length ? data.map((el) => el.count) : 0,
                                     backgroundColor: colors[12],
                                     borderColor: 'rgba(255, 99, 132)'
                                 }]
