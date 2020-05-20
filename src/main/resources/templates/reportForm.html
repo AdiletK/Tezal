@@ -149,6 +149,9 @@
                     }
 
                     $('#download').on("click", function () {
+                        document.getElementById("dateFromEr").innerHTML = "";
+                        document.getElementById("dateToEr").innerHTML = "";
+
                         const typeId = $("#typeId option:selected").val();
                         const dateFrom = document.getElementById("dateFrom").value;
                         const dateTo = document.getElementById("dateTo").value;

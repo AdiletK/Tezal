@@ -22,7 +22,7 @@ public class HomeController {
         } else if (isCashier){
             return "redirect:/cashier/orders";
         }
-        return "redirect:/organization/forOrgAdmin";
+        return "redirect:/dashboard";
     }
 
     @RequestMapping(value = "/index")

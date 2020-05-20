@@ -45,6 +45,12 @@ public class OrderRestController {
         return orderService.putById(id, orderModel);
     }
 
+    @GetMapping("/list/{orgId}")
+    public List<OrderModel> findOrdersByOrgIdAndTypeWithDate(@PathVariable Long orgId, @RequestParam("type") String type, @RequestParam("dateFrom")String dateFrom,
+                                                             @RequestParam("dateTo") String dateTo){
+        return orderService.findByOrgIdAndTypeWithDate(orgId, type, dateFrom, dateTo);
+    }
+
     @GetMapping("/list/filter/{orgId}")
     public List<SalesShortModel> findAllDeliveredByOrgIdWithFilter(@PathVariable Long orgId, @RequestParam("dateFrom")String dateFrom,
                                                                    @RequestParam("dateTo") String dateTo){

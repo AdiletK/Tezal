@@ -56,6 +56,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderModel> findByOrgIdAndTypeWithDate(Long id, String type, String dateFrom, String dateTo) {
+        return reportDao.getOrderList(id, type, dateFrom, dateTo);
+    }
+
+    @Override
     public List<SalesShortModel> findAllDeliveredByOrgIdWithDate(Long id, String dateFrom, String dateTo) {
         return reportDao.getSalesByOrgId(id, dateFrom, dateTo);
     }

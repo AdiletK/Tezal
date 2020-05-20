@@ -17,6 +17,8 @@ public interface OrderService {
 
     List<OrderModel> findAllByClientId(Long id);
 
+    List<OrderModel> findByOrgIdAndTypeWithDate(Long id, String type, String dateFrom, String dateTo);
+
     List<SalesShortModel> findAllDeliveredByOrgIdWithDate(Long id, String dateFrom, String dateTo);
 
     Page<OrderModel> findAllByOrgIdAndByNameOrDescription(Long id, String search, Pageable pageable);

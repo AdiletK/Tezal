@@ -1,5 +1,7 @@
 package kg.tezal.tezal_back.dao;
 
+import kg.tezal.tezal_back.enums.OrderStatus;
+import kg.tezal.tezal_back.model.OrderModel;
 import kg.tezal.tezal_back.model.PurchaseShortModel;
 import kg.tezal.tezal_back.model.SalesShortModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -145,5 +147,59 @@ public class ReportDao {
         return arrayList;
     }
 
+    public List<OrderModel> getOrderList(Long orgId, String type, String dateFrom, String dateTo) {
+        List<OrderModel> arrayList = new ArrayList<>();
+        Connection connection = null;
+        Statement stmt = null;
+        String sql;
+        try{
+            connection = this.dataSource.getConnection();
+            stmt = connection.createStatement();
+            // QUERY
+            sql = "select o.id ,cl.id, cl.first_name, cl.last_name, org.name, o.orders_status, o.update_date " +
+                    "from orders o " +
+                    "         join organization org on o.organization_id = org.id " +
+                    "         join client cl on o.client_id = cl.id " +
+                    "where o.organization_id = " + orgId + " and o.orders_status='"+ type +"' " ;
+            if (!dateFrom.isEmpty() && !dateTo.isEmpty()){
+                sql = sql + " and o.create_date between '" + dateFrom + "' and '" + dateTo + "' order by o.create_date DESC";
+            }
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            if(resultSet.next()){
+                do {
+                    OrderModel model = new OrderModel ();
+                    model.setId(resultSet.getLong(1));
+                    model.setClientId(resultSet.getLong(2));
+                    model.setClientFirstName(resultSet.getString(3));
+                    model.setClientLastName(resultSet.getString(4));
+                    model.setOrganizationName(resultSet.getString(5));
+                    model.setOrdersStatus(OrderStatus.valueOf(resultSet.getString(6)));
+                    model.setUpdatedDate(resultSet.getDate(7).toLocalDate().atStartOfDay());
+                    arrayList.add(model);
+                } while (resultSet.next());
+            } else {
+                System.out.println("result set is empty");
+            }
+            resultSet.close();
+        } catch(SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null)
+                    connection.close();
+            } catch (SQLException se) {
+                System.out.println(se);
+            }
+            try {
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return arrayList;
+    }
 
 }
