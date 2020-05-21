@@ -45,4 +45,11 @@ public class ManagerDashboardController {
                                                         @RequestParam("dateTo")String dateTo){
         return statisticsRestController.getOrdersByOrgId(orgId, dateFrom, dateTo);
     }
+
+    @ResponseBody
+    @GetMapping("/user/{orgId}")
+    public List<StatisticsModel> getUserByOrgId(@PathVariable Long orgId, @RequestParam("dateFrom") String dateFrom,
+                                                 @RequestParam("dateTo")String dateTo){
+        return statisticsRestController.getUsersByOrgId(orgId, dateFrom, dateTo);
+    }
 }

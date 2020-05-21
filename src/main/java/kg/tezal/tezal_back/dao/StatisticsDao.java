@@ -51,19 +51,7 @@ public class StatisticsDao {
                     "                    order by sum(o_p.number_of) desc " +
                     "                    limit 10";
 
-            ResultSet resultSet = stmt.executeQuery(sql);
-
-            if(resultSet.next()){
-                do {
-                    StatisticsModel model = new StatisticsModel();
-                    model.setName(resultSet.getString(1));
-                    model.setCount(resultSet.getDouble(2));
-                    arrayList.add(model);
-                } while (resultSet.next());
-            } else {
-                System.out.println("result set is empty");
-            }
-            resultSet.close();
+            getStatisticModel(arrayList, stmt, sql);
         } catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
@@ -101,19 +89,8 @@ public class StatisticsDao {
                     "group by month " +
                     "order by month ";
 
-            ResultSet resultSet = stmt.executeQuery(sql);
+            getStatisticModel(arrayList, stmt, sql);
 
-            if(resultSet.next()){
-                do {
-                    StatisticsModel model = new StatisticsModel();
-                    model.setName(resultSet.getString(1));
-                    model.setCount(resultSet.getDouble(2));
-                    arrayList.add(model);
-                } while (resultSet.next());
-            } else {
-                System.out.println("result set is empty");
-            }
-            resultSet.close();
         } catch(SQLException se){
             //Handle errors for JDBC
             se.printStackTrace();
@@ -132,6 +109,61 @@ public class StatisticsDao {
             }
         }
         return arrayList;
+    }
+
+    public List<StatisticsModel> getUsersStatisticByOrgId(Long orgId, String dateFrom, String dateTo) {
+        List<StatisticsModel> arrayList = new ArrayList<>();
+        Connection connection = null;
+        Statement stmt = null;
+        String sql;
+        try{
+            connection = this.dataSource.getConnection();
+            stmt = connection.createStatement();
+            // QUERY
+            sql = "select u.username, count(o.id) " +
+                    "from orders o " +
+                    "         join organization org on o.organization_id = org.id " +
+                    "         join client cl on o.client_id = cl.id " +
+                    "         join users u on o.users_id = u.id " +
+                    "where o.organization_id = " + orgId + " and o.orders_status='DELIVERED' and u.rolenameshort='cashier' and o.create_date " +
+                    "    between '" + dateFrom + "' and '" + dateTo + "' " +
+                    "group by u.username";
+
+            getStatisticModel(arrayList, stmt, sql);
+        } catch(SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        } finally {
+            try {
+                if (stmt != null)
+                    connection.close();
+            } catch (SQLException se) {
+                System.out.println(se);
+            }
+            try {
+                if (connection != null)
+                    connection.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return arrayList;
+    }
+
+    private void getStatisticModel(List<StatisticsModel> arrayList, Statement stmt, String sql) throws SQLException {
+        ResultSet resultSet = stmt.executeQuery(sql);
+
+        if (resultSet.next()) {
+            do {
+                StatisticsModel model = new StatisticsModel();
+                model.setName(resultSet.getString(1));
+                model.setCount(resultSet.getDouble(2));
+                arrayList.add(model);
+            } while (resultSet.next());
+        } else {
+            System.out.println("result set is empty");
+        }
+        resultSet.close();
     }
 
 }

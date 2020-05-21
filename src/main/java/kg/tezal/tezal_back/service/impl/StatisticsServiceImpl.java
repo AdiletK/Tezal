@@ -24,4 +24,9 @@ public class StatisticsServiceImpl implements StatisticsService {
     public List<StatisticsModel> getOrderStatisticByOrgId(Long orgId, String dateFrom, String dateTo) {
         return statisticsDao.getOrderStatisticByOrgId(orgId, dateFrom, dateTo);
     }
+
+    @Override
+    public List<StatisticsModel> getUserStatisticByOrgId(Long orgId, String dateFrom, String dateTo) {
+        return statisticsDao.getUsersStatisticByOrgId(orgId, dateFrom, dateTo);
+    }
 }

@@ -28,4 +28,9 @@ public class StatisticsRestController {
         return statisticsService.getOrderStatisticByOrgId(orgId, dateFrom, dateTo);
     }
 
+    @GetMapping("/users/{orgId}")
+    public List<StatisticsModel> getUsersByOrgId(@PathVariable Long orgId, @RequestParam("dateFrom")String dateFrom,
+                                                  @RequestParam("dateTo")String dateTo) {
+        return statisticsService.getUserStatisticByOrgId(orgId, dateFrom, dateTo);
+    }
 }

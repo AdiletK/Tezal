@@ -13,7 +13,7 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-8">
-                        <h3 class="w-75 p-3">Главная страница</h3>
+                        <h3 class="w-75 p-3" data-th-text="#{dashboard.label.main.label}"></h3>
                     </div>
 
                 </div>
@@ -24,6 +24,7 @@
                     <div class="row grid-divider">
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="card">
+                                <div class="card-header"><h4 align="center" data-th-text="#{dashboard.label.product.label}"> </h4></div>
                                 <div class="card-body">
                                     <canvas id="soldChart" width="90"></canvas>
                                 </div>
@@ -31,56 +32,21 @@
                         </div>
                         <div class="col-sm-12 col-md-6 col-lg-6">
                             <div class="card">
+                                <div class="card-header"><h4 align="center" data-th-text="#{dashboard.label.order.label}"></h4></div>
                                 <div class="card-body">
                                     <canvas id="orderChart" width="90"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-header"><h4 align="center" data-th-text="#{dashboard.label.user.label}"> </h4></div>
+                        <div class="card-body">
+                            <canvas id="userChart" ></canvas>
+                        </div>
+                    </div>
                 </div>
                 <script>
-                    $(document).ready(function() {
-                        const orgId = document.getElementById("org_id").value;
-                        const d = new Date()
-                        const dateFrom = (d.getFullYear() - 1) +'-'+(d.getMonth()+1) + '-' + d.getDate();
-                        const dateTo = (d.getFullYear()) +'-'+(d.getMonth()+1) + '-' + d.getDate();
-                        console.log(dateFrom + ' ' + dateTo)
-                        $.ajax({
-                            url: "/dashboard/order/" + orgId + "?dateFrom=" + dateFrom + "&dateTo="+ dateTo,
-                            type: "GET",
-                            dataType: 'json',
-                            contentType: "application/json",
-                            success: function (data) {
-                                console.log(data)
-                                showOrderChart(data)
-                            },
-                            error: function (request, error) {
-                                alert("Что-то пошло не так!");
-                            }
-                        });
-
-                        $.ajax({
-                            url: "/dashboard/sold/" + orgId,
-                            type: "GET",
-                            dataType: 'json',
-                            contentType: "application/json",
-                            success: function (data) {
-                                    showSoldProduct(data)
-                            },
-                            error: function (request, error) {
-                                alert("Что-то пошло не так!");
-                            }
-                        });
-                    });
-                    function getName(item) {
-                        var name = [item.name];
-                        return name;
-                    }
-                    function getData(item) {
-                        var count = [item.count];
-                        return count;
-                    }
-
                     const month = [
                         '',
                         'Январь',
@@ -110,6 +76,70 @@
                         'rgba(108,50,144,0.2)',
                         'rgba(255, 159, 64, 0.2)',
                         'rgba(255,255,255,0)']
+                    let colors_border = [
+                        'rgb(255,99,132)',
+                        'rgba(54, 162, 235)',
+                        'rgba(255, 206, 86)',
+                        'rgba(75, 192, 192)',
+                        'rgba(153, 102, 255)',
+                        'rgba(31,116,72)',
+                        'rgba(153, 23, 43)',
+                        'rgba(32,60,134)',
+                        'rgba(53,109,29)',
+                        'rgba(18,149,134)',
+                        'rgba(108,50,144)',
+                        'rgba(255, 159, 64)',
+                        'rgba(255,255,255)']
+
+                    $(document).ready(function() {
+                        const orgId = document.getElementById("org_id").value;
+                        const d = new Date()
+                        const dateFrom = (d.getFullYear() - 1) +'-'+(d.getMonth()+1) + '-' + d.getDate();
+                        const dateTo = (d.getFullYear()) +'-'+(d.getMonth()+1) + '-' + d.getDate();
+                        const dateMonthFrom = (d.getFullYear()) +'-'+(d.getMonth()) + '-' + d.getDate();
+                        const dateMonthTo = (d.getFullYear()) +'-'+(d.getMonth()+1) + '-' + d.getDate();
+                        console.log(dateFrom + ' ' + dateTo)
+                        $.ajax({
+                            url: "/dashboard/order/" + orgId + "?dateFrom=" + dateFrom + "&dateTo="+ dateTo,
+                            type: "GET",
+                            dataType: 'json',
+                            contentType: "application/json",
+                            success: function (data) {
+                                console.log(data)
+                                showOrderChart(data)
+                            },
+                            error: function (request, error) {
+                                alert("Что-то пошло не так!");
+                            }
+                        });
+
+                        $.ajax({
+                            url: "/dashboard/sold/" + orgId,
+                            type: "GET",
+                            dataType: 'json',
+                            contentType: "application/json",
+                            success: function (data) {
+                                    showSoldProduct(data)
+                            },
+                            error: function (request, error) {
+                                alert("Что-то пошло не так!");
+                            }
+                        });
+
+                        $.ajax({
+                            url: "/dashboard/user/" + orgId + "?dateFrom=" + dateMonthFrom + "&dateTo=" + dateMonthTo,
+                            type: "GET",
+                            dataType: 'json',
+                            contentType: "application/json",
+                            success: function (data) {
+                                showUserChart(data)
+                            },
+                            error: function (request, error) {
+                                alert("Что-то пошло не так!");
+                            }
+                        });
+                    });
+
                     function showSoldProduct(data) {
                         var ctx = document.getElementById('soldChart');
                         var soldChart = new Chart(ctx, {
@@ -117,11 +147,11 @@
                             data: {
                                 labels: Object.keys(data).length ? data.map((el) => el.name) : 'Нет активных действий!',
                                 datasets: [{
-                                    label: 'Часто продаваемые товары',
+                                    label: '',
                                     data: Object.keys(data).length ? data.map((el) => el.count) : 0,
                                     backgroundColor: colors.slice(0,data.length),
-                                    borderColor: colors.slice(0, data.length),
-                                    borderWidth: 0.5
+                                    borderColor: colors_border.slice(0, data.length),
+                                    borderWidth: 1
                                 }]
                             },
                             options: {
@@ -141,9 +171,9 @@
                             type: 'line',
                             fill: false,
                             data: {
-                                labels: Object.keys(data).length ? data.map((el) => month[el.name]) :'',
+                                labels: Object.keys(data).length ? data.map((el) => month[el.name]) :'Нет активных действий!',
                                 datasets: [{
-                                    label: 'Кол-во продаж за последний год ',
+                                    label: '',
                                     data: Object.keys(data).length ? data.map((el) => el.count) : 0,
                                     backgroundColor: colors[12],
                                     borderColor: 'rgba(255, 99, 132)'
@@ -158,6 +188,21 @@
                                     }]
                                 }
                             }
+                        });
+                    }
+                    function showUserChart(data) {
+                        var ctx = document.getElementById('userChart');
+                        var userChart = new Chart(ctx, {
+                            type: 'polarArea',
+                            data: {
+                                labels: Object.keys(data).length ? data.map((el) => el.name) :'Нет активных действий!',
+                                datasets: [{
+                                    data: Object.keys(data).length ? data.map((el) => el.count) : 0,
+                                    backgroundColor: colors.slice(0,data.length),
+                                    borderColor: colors_border.slice(0, data.length)
+                                }]
+                            }
+
                         });
                     }
                 </script>

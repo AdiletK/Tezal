@@ -8,4 +8,6 @@ public interface StatisticsService {
     List<StatisticsModel> getSoldProductsByOrgId(Long orgId);
 
     List<StatisticsModel> getOrderStatisticByOrgId(Long orgId, String dateFrom, String dateTo);
+
+    List<StatisticsModel> getUserStatisticByOrgId(Long orgId, String dateFrom, String dateTo);
 }
