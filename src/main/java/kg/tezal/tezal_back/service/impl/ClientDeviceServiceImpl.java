@@ -1,6 +1,7 @@
 package kg.tezal.tezal_back.service.impl;
 
 import kg.tezal.tezal_back.entity.ClientDevice;
+import kg.tezal.tezal_back.model.ClientDeviceModel;
 import kg.tezal.tezal_back.repository.ClientDeviceRepository;
 import kg.tezal.tezal_back.service.ClientDeviceService;
 import kg.tezal.tezal_back.utils.RecordNotFoundException;
@@ -37,11 +38,9 @@ public class ClientDeviceServiceImpl implements ClientDeviceService {
         return "ClientDevice number " + id + " has been deleted!";
     }
 
-    public ClientDevice putById(Long id, ClientDevice clientDevice) {
+    public ClientDevice putById(Long id, ClientDeviceModel clientDevice) {
         return clientDeviceRepository.findById(id)
                 .map(newClientDevice -> {
-                    newClientDevice.setId(clientDevice.getId());
-                    newClientDevice.setClient(clientDevice.getClient());
                     newClientDevice.setImei(clientDevice.getImei());
                     newClientDevice.setLastEnterDate(clientDevice.getLastEnterDate());
                     newClientDevice.setPassword(clientDevice.getPassword());

@@ -5,6 +5,7 @@ import kg.tezal.tezal_back.apicontroller.UnitRestController;
 import kg.tezal.tezal_back.entity.MaterialCategory;
 import kg.tezal.tezal_back.entity.Unit;
 import kg.tezal.tezal_back.model.RawMaterialModel;
+import kg.tezal.tezal_back.model.RawMaterialModelImage;
 import kg.tezal.tezal_back.service.RawMaterialService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +39,12 @@ public class RawMaterialController {
     @GetMapping(value = "/list")
     public String materialList(@RequestParam(value = "search", required = false) String search,
             @PageableDefault(7) Pageable pageable, Model model) {
-        Page<RawMaterialModel> materials = rawMaterialService.findAllByNameOrDescription(search != null ? search.toLowerCase() : " ", pageable);
+        Page<RawMaterialModel> materials = null;
+        if (search != null) {
+            materials = rawMaterialService.findAllByNameOrDescription(search.toLowerCase(), pageable);
+        }else {
+            materials = rawMaterialService.findAllByNameOrDescription(pageable);
+        }
         boolean isEmpty = materials.isEmpty();
         model.addAttribute("materials", materials);
         model.addAttribute("isEmpty", isEmpty);
@@ -58,7 +64,7 @@ public class RawMaterialController {
 
     @PostMapping("update/{id}")
     public String updateMaterial(@PathVariable("id") Long id,
-                                     @Valid @ModelAttribute("material") RawMaterialModel materialModel,
+                                     @Valid @ModelAttribute("material") RawMaterialModelImage materialModel,
                                      BindingResult result, Model model) {
         if (result.hasErrors()) {
             materialModel.setId(id);
@@ -85,7 +91,7 @@ public class RawMaterialController {
 
     @PostMapping(value = "/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public String addMaterial(@Valid @ModelAttribute("material") RawMaterialModel materialModel,
+    public String addMaterial(@Valid @ModelAttribute("material") RawMaterialModelImage materialModel,
                                   BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute(materialModel);

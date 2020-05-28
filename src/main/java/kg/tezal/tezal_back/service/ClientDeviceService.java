@@ -1,6 +1,7 @@
 package kg.tezal.tezal_back.service;
 
 import kg.tezal.tezal_back.entity.ClientDevice;
+import kg.tezal.tezal_back.model.ClientDeviceModel;
 
 import java.util.List;
 
@@ -15,5 +16,5 @@ public interface ClientDeviceService {
 
     String deleteById(Long id);
 
-    ClientDevice putById(Long id, ClientDevice clientDevice);
+    ClientDevice putById(Long id, ClientDeviceModel clientDevice);
 }

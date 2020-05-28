@@ -22,6 +22,7 @@ public class ManagerDashboardController {
 
     @GetMapping
     public String main(Model model) {
+        int a = 222;
         Long id = getUser().getOrganization().getId();
         model.addAttribute("orgId", id);
         return "dashboard";

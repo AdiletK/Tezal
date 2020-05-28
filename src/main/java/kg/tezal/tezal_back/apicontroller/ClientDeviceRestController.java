@@ -1,6 +1,7 @@
 package kg.tezal.tezal_back.apicontroller;
 
 import kg.tezal.tezal_back.entity.ClientDevice;
+import kg.tezal.tezal_back.model.ClientDeviceModel;
 import kg.tezal.tezal_back.service.ClientDeviceService;
 import kg.tezal.tezal_back.utils.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class ClientDeviceRestController {
     }
 
     @PutMapping("/{id}")
-    public ClientDevice putClientDevice(@PathVariable("id") Long id, @RequestBody ClientDevice clientDevice) {
+    public ClientDevice putClientDevice(@PathVariable("id") Long id, @RequestBody ClientDeviceModel clientDevice) {
         return clientDeviceService.putById(id, clientDevice);
     }
 

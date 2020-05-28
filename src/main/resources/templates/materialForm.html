@@ -17,7 +17,26 @@
         <div class="card">
             <h3 class="card-header font-bold text-dark" th:text="${add} ? #{material.label.new_org} : ${material.name}"></h3>
             <div class="card-body">
-                <form action="#" th:action="${add} ? @{create} : @{/product/update/{id}(id = ${material.id})}"  th:object="${material}" method="POST">
+                <form action="#" enctype="multipart/form-data" th:action="${add} ? @{create} : @{/product/update/{id}(id = ${material.id})}"  th:object="${material}" method="POST">
+                    <label class="text-dark font-bold col-form-label" data-th-text="#{filialForm.label.image.logo}"></label>
+                    <div class="form-group">
+                        <div class="box">
+                            <div class="js--image-preview"></div>
+                            <div class="upload-options">
+                                <label>
+                                    <input type="file" th:field="*{image}" name="image" class="image-upload" accept="image/*" />
+                                </label>
+                            </div>
+                        </div>
+                        <script th:inline="javascript">
+                            var image = /*[[${material.image}]]*/ null;
+                            if(image != null){
+                                var thumb = document.querySelector('.js--image-preview');
+                                thumb.style.backgroundImage = 'url(' + image + ')';
+                                thumb.className += ' js--no-default';
+                            }
+                        </script>
+                    </div>
                     <div class="form-group">
                         <label class="text-dark font-bold col-form-label" for="inputText1" data-th-text="#{material.label.mat_name}"></label>
                         <input  th:value="${add} ? '' : ${material.name} " th:field="*{name}" id="inputText1" type="text" class="form-control">
