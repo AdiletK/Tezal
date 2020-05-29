@@ -132,6 +132,7 @@
                             dataType: 'json',
                             contentType: "application/json",
                             success: function (data) {
+                                console.log(data)
                                 showUserChart(data)
                             },
                             error: function (request, error) {
@@ -190,6 +191,7 @@
                             }
                         });
                     }
+
                     function showUserChart(data) {
                         var ctx = document.getElementById('userChart');
                         var userChart = new Chart(ctx, {
