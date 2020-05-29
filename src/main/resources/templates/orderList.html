@@ -126,14 +126,19 @@
 
                             function setDates() {
                                 const d = new Date()
+                                // document.getElementById('dateFrom').value = d.getDate()+'-'+(d.getMonth()+1) + '-' + d.getFullYear();
                                 document.getElementById('dateFrom').value = d.getDate()+'-'+(d.getMonth()+1) + '-' + d.getFullYear();
                                 document.getElementById('dateTo').value = d.getDate()+'-'+(d.getMonth()+1) + '-' + d.getFullYear();
                             }
 
                             function showFilter(type, dateFrom, dateTo) {
+                                var parts = dateFrom.split("-");
+                                var date_to_parts = dateTo.split("-");
+                                const date_from = parts[2] + '-' + parts[1] + '-' + parts[0]
+                                const date_to = date_to_parts[2] + '-' + date_to_parts[1] + '-' + date_to_parts[0]
                                 const orgId = document.getElementById("org_id").value;
                                 $.ajax({
-                                    url: "/api/order/list/" + orgId + "?type=" + type + "&dateFrom=" + dateFrom + "&dateTo="+ dateTo,
+                                    url: "/api/order/list/" + orgId + "?type=" + type + "&dateFrom=" + date_from + "&dateTo="+ date_to,
                                     type: "GET",
                                     dataType: 'json',
                                     contentType: "application/json",
@@ -194,6 +199,7 @@
                                 const type = $("#typeId option:selected").val();
                                 const dateFrom = document.getElementById("dateFrom").value;
                                 const dateTo = document.getElementById("dateTo").value;
+
                                 if (dateFrom === "" ) {
                                     document.getElementById("dateFromEr").innerHTML = "Поле не должно быть пустым!";
                                 } else if (dateTo === "" ) {
