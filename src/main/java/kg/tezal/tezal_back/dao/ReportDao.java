@@ -107,8 +107,12 @@ public class ReportDao {
                     "         join raw_material rm on o_p.raw_material_id = rm.id " +
                     "         join organization org on o.organization_id = org.id " +
                     "         join client cl on o.client_id = cl.id " +
-                    "where o.organization_id = " + orgId + " and o.orders_status='DELIVERED'  and  o.create_date between '" + dateFrom + "' and '" + dateTo + "' order by o.create_date DESC" ;
+                    "where o.organization_id = " + orgId ;
 
+            if (dateFrom != null && dateTo !=null){
+                sql = sql  + " and  o.create_date between '" + dateFrom + "' and '" + dateTo + "'";
+            }
+            sql = sql + " order by o.create_date DESC";
             ResultSet resultSet = stmt.executeQuery(sql);
 
             if(resultSet.next()){

@@ -25,6 +25,11 @@ public class ClientDeviceServiceImpl implements ClientDeviceService {
         return clientDeviceRepository.findByPhoneNumber(phone);
     }
 
+    @Override
+    public ClientDevice findByClientId(Long id) {
+        return clientDeviceRepository.findByClientId(id);
+    }
+
     public List<ClientDevice> findAll() {
         return clientDeviceRepository.findAll();
     }

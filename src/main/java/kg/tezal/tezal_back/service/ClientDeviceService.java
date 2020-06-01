@@ -10,6 +10,8 @@ public interface ClientDeviceService {
 
     ClientDevice findByPhone(String id);
 
+    ClientDevice findByClientId(Long id);
+
     List<ClientDevice> findAll();
 
     ClientDevice create(ClientDevice clientDevice);

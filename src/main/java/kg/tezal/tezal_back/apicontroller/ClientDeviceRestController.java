@@ -21,6 +21,11 @@ public class ClientDeviceRestController {
         return clientDeviceService.findById(id);
     }
 
+    @GetMapping("/byClientId/{id}")
+    public ClientDevice getClientDeviceByClientId(@PathVariable("id") Long id) {
+        return clientDeviceService.findByClientId(id);
+    }
+
     @GetMapping("/all")
     public List<ClientDevice> getAll() {
         return clientDeviceService.findAll();
