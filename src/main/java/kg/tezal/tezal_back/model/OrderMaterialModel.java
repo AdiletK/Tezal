@@ -19,5 +19,6 @@ public class OrderMaterialModel {
     private Long rawMaterialId;
     private String rawMaterialName;
     private Float rawMaterialVolume;
+    private String image;
 
 }
