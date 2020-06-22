@@ -1,10 +1,16 @@
 <!doctype html>
-<html xmlns:layout="http://www.w3.order/1999/xhtml" xmlns:th="http://www.w3.order/1999/xhtml"
+<html xmlns:layout="http://www.w3.order/1999/xhtml"
+      xmlns:th="http://www.w3.order/1999/xhtml"
       layout:decorate="~{layout}"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
 >
 <head>
     <title data-th-text="#{order.label.header.title}"></title>
+    <style>
+        .inputClass {
+            pointer-events: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -18,11 +24,11 @@
                         <h3 class="w-75 p-3" data-th-text="#{order.label.header.title}"></h3>
                     </div>
                     <div class="col-md-2 float-right">
-                        <a sec:authorize="hasAnyRole('ADMIN','CASHIER')" class="btn btn-success m-t-10" href="form"
-                           data-th-text="#{button.label.create}"></a>
-                        <a sec:authorize="hasRole('MANAGER')" class="btn btn-success m-t-10"
-                           th:href="@{'/organization/' + ${orgId} + '/order/form'}"
-                           data-th-text="#{button.label.create}"></a>
+<!--                        <a sec:authorize="hasAnyRole('ADMIN','CASHIER')" class="btn btn-success m-t-10" href="form"-->
+<!--                           data-th-text="#{button.label.create}"></a>-->
+<!--                        <a sec:authorize="hasRole('MANAGER')" class="btn btn-success m-t-10"-->
+<!--                           th:href="@{'/organization/' + ${orgId} + '/order/form'}"-->
+<!--                           data-th-text="#{button.label.create}"></a>-->
 
                     </div>
                 </div>
@@ -46,6 +52,166 @@
                                 data-th-text="#{button.label.search}"></button>
                     </div>
                 </form>
+                <input type="text" id="org_id" th:value="${orgId} ? ${orgId}" style="visibility: hidden">
+                <div class="form-group m-t-20" sec:authorize="hasRole('MANAGER')">
+                    <details>
+                        <summary align="center" class="card-header-title">Сортировка</summary>
+                        <div class="form-group">
+                            <label class="text-dark font-bold" for="typeId">Выберите :</label>
+                            <select id="typeId" class="form-control" >
+                                <option th:each="status : ${T(kg.tezal.tezal_back.enums.OrderStatus).values()}"
+                                        th:value="${status}" th:text="${status}"
+                                ></option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4" >
+                                <label class="text-dark font-bold" for="dateFrom" data-th-text="#{label.date_from}">Date From:</label></br>
+                                <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                                    <input type="text" name="dateFrom" class="form-control datetimepicker-input inputClass"
+                                           id="dateFrom" th:value="${dateFrom} ? ${dateFrom}" required>
+                                    <div class="input-group-append" data-target="#datetimepicker4"
+                                         data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                    </div>
+                                </div>
+                                <p id="dateFromEr" style="color:red;" ></p>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="text-dark font-bold" for="dateTo" data-th-text="#{label.date_to}">Date To:</label></br>
+                                <div class="input-group date" id="datetimepicker5" data-target-input="nearest">
+                                    <input type="text" name="dateTo" class="form-control datetimepicker-input inputClass"
+                                           id="dateTo" th:value="${dateTo} ? ${dateTo}" required >
+                                    <div class="input-group-append" data-target="#datetimepicker5"
+                                         data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                                    </div>
+                                </div>
+                                <p id="dateToEr" style="color:red;" ></p>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <div >
+                                            </br>
+                                            <button id="btn_sort" class="btn btn-outline-info m-t-10"
+                                                    data-th-text="#{button.label.search}"></button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm">
+                                        <div >
+                                            </br>
+                                            <button id="btn_print" class="btn btn-outline-success m-t-10"
+                                                    data-th-text="#{button.label.print}"></button>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm">
+                                        <div >
+                                            </br>
+                                            <form method="get" action="/organization/order/forOrgAdmin">
+                                                <button type="submit" class="btn btn-outline-danger m-t-10"
+                                                        data-th-text="#{button.label.reset}"></button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            let orders = [];
+                            $(document).ready(function() {
+                                setDates();
+                            }); 
+
+                            function setDates() {
+                                const d = new Date()
+                                // document.getElementById('dateFrom').value = d.getDate()+'-'+(d.getMonth()+1) + '-' + d.getFullYear();
+                                document.getElementById('dateFrom').value = d.getDate()+'-'+(d.getMonth()+1) + '-' + d.getFullYear();
+                                document.getElementById('dateTo').value = d.getDate()+'-'+(d.getMonth()+1) + '-' + d.getFullYear();
+                            }
+
+                            function showFilter(type, dateFrom, dateTo) {
+                                var parts = dateFrom.split("-");
+                                var date_to_parts = dateTo.split("-");
+                                const date_from = parts[2] + '-' + parts[1] + '-' + parts[0]
+                                const date_to = date_to_parts[2] + '-' + date_to_parts[1] + '-' + date_to_parts[0]
+                                const orgId = document.getElementById("org_id").value;
+                                $.ajax({
+                                    url: "/api/order/list/" + orgId + "?type=" + type + "&dateFrom=" + date_from + "&dateTo="+ date_to,
+                                    type: "GET",
+                                    dataType: 'json',
+                                    contentType: "application/json",
+                                    success: function (data) {
+                                        // circle.stop()
+                                        orders = data
+                                        if (!Object.keys(data).length){
+                                            alert("За выбранный период ничего не найдено!")
+                                        } else {
+                                            let buffer = "";
+                                            let ordersTableBody = $("#orders_data");
+
+                                            for (let i=0; i<data.length; i++){
+                                                let item = data[i]
+                                                const prod = "<i class=\"far fa-bookmark\"></i>";
+                                                const product = prod.link("/organization/" + orgId + "/order/"+ item.id + "/material/list")
+                                                buffer += "<tr>" +
+                                                    "<td>" + (i+1) + "</td>" +
+                                                    "<td>" + item.clientFirstName + ' ' + item.clientLastName + "</td>" +
+                                                    "<td>" + item.updatedDate + "</td>" +
+                                                    "<td>" + product + "</td>" +
+                                                    "<td>"+ item.ordersStatus + "</td>" +
+                                                    "</tr>"
+                                            }
+                                            ordersTableBody.html(buffer);
+                                            document.getElementById("pagination").style.display = "none";
+
+                                        }
+                                    },
+                                    error: function (request, error) {
+                                        alert("Что-то пошло не так!");
+                                    }
+                                });
+                            }
+                            $('#btn_print').on("click", function () {
+                                if (!Object.keys(orders).length){
+                                    alert("За выбранный период ничего не найдено!")
+                                } else {
+                                    printJS({
+                                        printable: orders,
+                                        properties: [
+                                            { field: 'clientFirstName', displayName: 'Имя'},
+                                            { field: 'clientLastName', displayName: 'Фамилия'},
+                                            { field: 'organizationName', displayName: 'Организация'},
+                                            { field: 'updatedDate', displayName: 'Дата'},
+                                            { field: 'ordersStatus', displayName: 'Статус'}
+                                        ],
+                                        type: 'json'
+                                        // header: ('Покупки.          Общее кол-во товаров:'+countSum+'\n Cумма:'+moneySum )
+                                    });
+                                }
+                            });
+
+                            $('#btn_sort').on("click", function () {
+                                document.getElementById("dateFromEr").innerHTML = "";
+                                document.getElementById("dateToEr").innerHTML = "";
+
+                                const type = $("#typeId option:selected").val();
+                                const dateFrom = document.getElementById("dateFrom").value;
+                                const dateTo = document.getElementById("dateTo").value;
+
+                                if (dateFrom === "" ) {
+                                    document.getElementById("dateFromEr").innerHTML = "Поле не должно быть пустым!";
+                                } else if (dateTo === "" ) {
+                                    document.getElementById("dateToEr").innerHTML = "Поле не должно быть пустым!";
+                                }
+                                else {
+                                    showFilter(type,dateFrom,dateTo)
+                                }
+                            });
+                        </script>
+                    </details>
+                </div>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -58,7 +224,7 @@
                             <th class="border-0" data-th-text="#{label.material}"></th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="orders_data">
                         <tr th:each="order,id : ${orders}">
                             <td th:text="${id.index+1}">1</td>
                             <td th:text="${order.clientFirstName} + ' ' + ${order.clientLastName}"> </td>
@@ -80,30 +246,30 @@
                                 <div th:case="${T(kg.tezal.tezal_back.enums.OrderStatus).AWAITING}" >
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <a style="width: 100%" class="btn btn-outline-success" th:href="${order.id}+'/confirm'" data-th-text="#{order.label.accept}">Accept</a>
+                                            <a style="width: 100%" class="btn btn-outline-success"  th:href="${order.id}+'/confirm'" onclick="return confirm('Подтвердите дейтствие.');" data-th-text="#{order.label.accept}">Accept</a>
                                         </div>
                                         <div class="col-md-6">
-                                            <a style="width: 100%" class="btn btn-outline-danger" th:href="${order.id}+'/decline'" data-th-text="#{order.label.decline}"></a>
+                                            <a style="width: 100%" class="btn btn-outline-danger" th:href="${order.id}+'/decline'" onclick="return confirm('Подтвердите дейтствие.');" data-th-text="#{order.label.decline}"></a>
                                         </div>
                                     </div>
                                 </div>
                                 <div th:case="${T(kg.tezal.tezal_back.enums.OrderStatus).ACCEPT}">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <a style="width: 100%" class="btn btn-outline-primary" th:href="${order.id}+'/ready'" data-th-text="#{order.label.ready}"></a>
+                                            <a style="width: 100%" class="btn btn-outline-primary" th:href="${order.id}+'/ready'" onclick="return confirm('Подтвердите дейтствие.');" data-th-text="#{order.label.ready}"></a>
                                         </div>
                                         <div class="col-md-6">
-                                            <a style="width: 100%" class="btn btn-outline-danger" th:href="${order.id}+'/decline'" data-th-text="#{order.label.decline}"></a>
+                                            <a style="width: 100%" class="btn btn-outline-danger" th:href="${order.id}+'/decline'" onclick="return confirm('Подтвердите дейтствие.');" data-th-text="#{order.label.decline}"></a>
                                         </div>
                                     </div>
                                 </div>
                                 <div th:case="${T(kg.tezal.tezal_back.enums.OrderStatus).READY}">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <a style="width: 100%" class="btn btn-outline-secondary" th:href="${order.id}+'/delivered'" data-th-text="#{order.label.delivered}"></a>
+                                            <a style="width: 100%" class="btn btn-outline-secondary" th:href="${order.id}+'/delivered'" onclick="return confirm('Подтвердите дейтствие.');" data-th-text="#{order.label.delivered}"></a>
                                         </div>
                                         <div class="col-md-6">
-                                            <a style="width: 100%" class="btn btn-outline-danger" th:href="${order.id}+'/decline'" data-th-text="#{order.label.decline}"></a>
+                                            <a style="width: 100%" class="btn btn-outline-danger" th:href="${order.id}+'/decline'" onclick="return confirm('Подтвердите дейтствие.');" data-th-text="#{order.label.decline}"></a>
                                         </div>
                                     </div>
                                 </div>
@@ -118,7 +284,7 @@
                 </div>
         </div>
     </div>
-        <nav aria-label="Page navigation example" >
+        <nav id="pagination" aria-label="Page navigation example" >
             <ul class="pagination justify-content-start">
                 <li th:if="${orders.hasPrevious()}" class="page-item">
                     <a class="page-link" th:href="'/organization/' + ${orgId} + '/order/list?search='+${search}+'&page='+${orders.number-1}" tabindex="-1" ><i class="fa fa-chevron-left"></i></a>
@@ -136,14 +302,9 @@
                 </li>
             </ul>
         </nav>
-
     </div>
 </div>
-<script>
 
-
-
-</script>
 </body>
 
 </html>

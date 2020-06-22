@@ -1,0 +1,218 @@
+<!doctype html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+<head>
+    <title >Графики</title>
+    <script src="/assets/libs/js/Chart.js"></script>
+    <script src="/assets/libs/js/Chart.bundle.js"></script>
+</head>
+
+<body>
+    <div layout:fragment="content">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3 class="w-75 p-3" data-th-text="#{dashboard.label.main.label}"></h3>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card">
+                <div class="container">
+                    <input type="text" id="org_id" th:value="${orgId} ? ${orgId}" style="visibility: hidden">
+                    <div class="row grid-divider">
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header"><h4 align="center" data-th-text="#{dashboard.label.product.label}"> </h4></div>
+                                <div class="card-body">
+                                    <canvas id="soldChart" width="90"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6">
+                            <div class="card">
+                                <div class="card-header"><h4 align="center" data-th-text="#{dashboard.label.order.label}"></h4></div>
+                                <div class="card-body">
+                                    <canvas id="orderChart" width="90"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h4 align="center" data-th-text="#{dashboard.label.user.label}"> </h4></div>
+                        <div class="card-body">
+                            <canvas id="userChart" ></canvas>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    const month = [
+                        '',
+                        'Январь',
+                        'Февраль',
+                        'Март',
+                        'Апрель',
+                        'Май',
+                        'Июнь',
+                        'Июль',
+                        'Август',
+                        'Сентябрь',
+                        'Октябрь',
+                        'Ноябрь',
+                        'Декабрь',
+                    ]
+                    let colors = [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(31,116,72,0.2)',
+                        'rgba(153, 23, 43, 0.2)',
+                        'rgba(32,60,134,0.2)',
+                        'rgba(53,109,29,0.2)',
+                        'rgba(18,149,134,0.2)',
+                        'rgba(108,50,144,0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(255,255,255,0)']
+                    let colors_border = [
+                        'rgb(255,99,132)',
+                        'rgba(54, 162, 235)',
+                        'rgba(255, 206, 86)',
+                        'rgba(75, 192, 192)',
+                        'rgba(153, 102, 255)',
+                        'rgba(31,116,72)',
+                        'rgba(153, 23, 43)',
+                        'rgba(32,60,134)',
+                        'rgba(53,109,29)',
+                        'rgba(18,149,134)',
+                        'rgba(108,50,144)',
+                        'rgba(255, 159, 64)',
+                        'rgba(255,255,255)']
+
+                    $(document).ready(function() {
+                        const orgId = document.getElementById("org_id").value;
+                        const d = new Date()
+                        const dateFrom = (d.getFullYear() - 1) +'-'+(d.getMonth()+1) + '-' + d.getDate();
+                        const dateTo = (d.getFullYear()) +'-'+(d.getMonth()+1) + '-' + d.getDate();
+                        const dateMonthFrom = (d.getFullYear()) +'-'+(d.getMonth()) + '-' + d.getDate();
+                        const dateMonthTo = (d.getFullYear()) +'-'+(d.getMonth()+1) + '-' + d.getDate();
+                        console.log(dateFrom + ' ' + dateTo)
+                        $.ajax({
+                            url: "/dashboard/order/" + orgId + "?dateFrom=" + dateFrom + "&dateTo="+ dateTo,
+                            type: "GET",
+                            dataType: 'json',
+                            contentType: "application/json",
+                            success: function (data) {
+                                console.log(data)
+                                showOrderChart(data)
+                            },
+                            error: function (request, error) {
+                                alert("Что-то пошло не так!");
+                            }
+                        });
+
+                        $.ajax({
+                            url: "/dashboard/sold/" + orgId,
+                            type: "GET",
+                            dataType: 'json',
+                            contentType: "application/json",
+                            success: function (data) {
+                                    showSoldProduct(data)
+                            },
+                            error: function (request, error) {
+                                alert("Что-то пошло не так!");
+                            }
+                        });
+
+                        $.ajax({
+                            url: "/dashboard/user/" + orgId + "?dateFrom=" + dateMonthFrom + "&dateTo=" + dateMonthTo,
+                            type: "GET",
+                            dataType: 'json',
+                            contentType: "application/json",
+                            success: function (data) {
+                                console.log(data)
+                                showUserChart(data)
+                            },
+                            error: function (request, error) {
+                                alert("Что-то пошло не так!");
+                            }
+                        });
+                    });
+
+                    function showSoldProduct(data) {
+                        var ctx = document.getElementById('soldChart');
+                        var soldChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: Object.keys(data).length ? data.map((el) => el.name) : 'Нет активных действий!',
+                                datasets: [{
+                                    label: '',
+                                    data: Object.keys(data).length ? data.map((el) => el.count) : 0,
+                                    backgroundColor: colors.slice(0,data.length),
+                                    borderColor: colors_border.slice(0, data.length),
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    }
+                    function showOrderChart(data) {
+                        var ctx = document.getElementById('orderChart');
+                        var soldChart = new Chart(ctx, {
+                            type: 'line',
+                            fill: false,
+                            data: {
+                                labels: Object.keys(data).length ? data.map((el) => month[el.name]) :'Нет активных действий!',
+                                datasets: [{
+                                    label: '',
+                                    data: Object.keys(data).length ? data.map((el) => el.count) : 0,
+                                    backgroundColor: colors[12],
+                                    borderColor: 'rgba(255, 99, 132)'
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    }
+
+                    function showUserChart(data) {
+                        var ctx = document.getElementById('userChart');
+                        var userChart = new Chart(ctx, {
+                            type: 'polarArea',
+                            data: {
+                                labels: Object.keys(data).length ? data.map((el) => el.name) :'Нет активных действий!',
+                                datasets: [{
+                                    data: Object.keys(data).length ? data.map((el) => el.count) : 0,
+                                    backgroundColor: colors.slice(0,data.length),
+                                    borderColor: colors_border.slice(0, data.length)
+                                }]
+                            }
+
+                        });
+                    }
+                </script>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

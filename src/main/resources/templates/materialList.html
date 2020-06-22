@@ -34,6 +34,7 @@
                         <table class="table">
                             <thead class="bg-light">
                             <tr class="border-0">
+                                <th class="border-0" data-th-text="#{filialList.label.img}"></th>
                                 <th class="border-0" data-th-text="#{material.label.name}"></th>
                                 <th class="border-0" data-th-text="#{material.label.category}"></th>
                                 <th class="border-0" data-th-text="#{material.label.volume}"></th>
@@ -42,6 +43,9 @@
                             </thead>
                             <tbody style="">
                                 <tr th:each="material : ${materials}"  class='clickable-row' href="/">
+                                    <td>
+                                        <div class="m-r-10"><img th:src="${material.image}" alt="org" class="rounded" width="45"></div>
+                                    </td>
                                     <td th:text="${material.name}">  Name </td>
                                     <td th:text="${material.materialCategoryName}"> Category</td>
                                     <td th:text="${material.volume}"> Volume</td>

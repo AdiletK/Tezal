@@ -37,10 +37,10 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-6" >
-                        <label class="text-dark font-bold" for="dateFrom">Date From:</label></br>
+                        <label class="text-dark font-bold" for="dateFrom" data-th-text="#{label.date_from}">Date From:</label></br>
                         <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
                             <input type="text" name="dateFrom" class="form-control datetimepicker-input"
-                                   id="dateFrom" th:value="${dateFrom} ? ${dateFrom}" required>
+                                   id="dateFrom"  required>
                             <div class="input-group-append" data-target="#datetimepicker4"
                                  data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
@@ -49,10 +49,10 @@
                         <p id="dateFromEr" style="color:red;" ></p>
                     </div>
                     <div class="col-sm-6">
-                        <label class="text-dark font-bold" for="dateTo">Date To:</label></br>
+                        <label class="text-dark font-bold" for="dateTo" data-th-text="#{label.date_to}">Date To:</label></br>
                         <div class="input-group date" id="datetimepicker5" data-target-input="nearest">
                             <input type="text" name="dateTo" class="form-control datetimepicker-input"
-                                   id="dateTo" th:value="${dateTo} ? ${dateTo}" required>
+                                   id="dateTo" required>
                             <div class="input-group-append" data-target="#datetimepicker5"
                                  data-toggle="datetimepicker">
                                 <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
@@ -67,9 +67,23 @@
                     </button>
                 </div>
                 <script>
+                    $(document).ready(function() {
+                        setDates();
+                    });
+
+                    function setDates() {
+                        const d = new Date()
+                        // document.getElementById('dateFrom').value = d.getDate()+'-'+(d.getMonth()+1) + '-' + d.getFullYear();
+                        document.getElementById('dateFrom').value = d.getDate()+'-'+(d.getMonth()) + '-' + d.getFullYear();
+                        document.getElementById('dateTo').value = d.getDate()+'-'+(d.getMonth()+1) + '-' + d.getFullYear();
+                    }
                     function printPurchase(dateFrom, dateTo) {
+                        var parts = dateFrom.split("-");
+                        var date_to_parts = dateTo.split("-");
+                        const date_from = parts[2] + '-' + parts[1] + '-' + parts[0]
+                        const date_to = date_to_parts[2] + '-' + date_to_parts[1] + '-' + date_to_parts[0]
                         $.ajax({
-                            url: "/organization/report/getPurchase?&from=" + dateFrom + "&to=" + dateTo,
+                            url: "/organization/report/getPurchase?&from=" + date_from + "&to=" + date_to,
                             type: "GET",
                             dataType: 'json',
                             contentType: "application/json",
@@ -86,7 +100,6 @@
                                         moneySum+=data[i].summ;
                                     }
 
-                                    alert(countSum + ' ' + moneySum)
                                     printJS({
                                         printable: data,
                                         properties: [
@@ -99,7 +112,7 @@
                                             { field: 'date', displayName: 'Дата'}
                                         ],
                                         type: 'json',
-                                        header: ('Общее кол-во товаров:'+countSum+'\n Cумма:'+moneySum )
+                                        header: ('Покупки.          Общее кол-во товаров:'+countSum+'\n Cумма:'+moneySum )
                                     });
                                 }
                             },
@@ -109,8 +122,13 @@
                         });
                     }
                     function printSales(dateFrom, dateTo) {
+                        var parts = dateFrom.split("-");
+                        var date_to_parts = dateTo.split("-");
+                        const date_from = parts[2] + '-' + parts[1] + '-' + parts[0]
+                        const date_to = date_to_parts[2] + '-' + date_to_parts[1] + '-' + date_to_parts[0]
+
                         $.ajax({
-                            url: "/organization/report/getSales?&from=" + dateFrom + "&to=" + dateTo,
+                            url: "/organization/report/getSales?&from=" + date_from + "&to=" + date_to,
                             type: "GET",
                             dataType: 'json',
                             contentType: "application/json",
@@ -137,7 +155,7 @@
                                             { field: 'date', displayName: 'Дата'}
                                         ],
                                         type: 'json',
-                                        header: ('Общее кол-во товаров:'+countSum+'\n Cумма:'+moneySum )
+                                        header: ('Продажи.          Общее кол-во товаров:'+countSum+'\n Cумма:'+moneySum )
 
                                     });
                                 }
@@ -150,6 +168,9 @@
                     }
 
                     $('#download').on("click", function () {
+                        document.getElementById("dateFromEr").innerHTML = "";
+                        document.getElementById("dateToEr").innerHTML = "";
+
                         const typeId = $("#typeId option:selected").val();
                         const dateFrom = document.getElementById("dateFrom").value;
                         const dateTo = document.getElementById("dateTo").value;

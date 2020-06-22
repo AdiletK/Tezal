@@ -2,6 +2,7 @@ package kg.tezal.tezal_back.apicontroller;
 
 import kg.tezal.tezal_back.entity.RawMaterial;
 import kg.tezal.tezal_back.model.RawMaterialModel;
+import kg.tezal.tezal_back.model.RawMaterialModelImage;
 import kg.tezal.tezal_back.model.RawMaterialShortModel;
 import kg.tezal.tezal_back.service.RawMaterialService;
 import org.springframework.web.bind.annotation.*;
@@ -36,12 +37,12 @@ public class RawMaterialRestController {
     }
 
     @PutMapping("/{id}")
-    public RawMaterial putRawMaterial(@PathVariable("id") Long id, @RequestBody RawMaterialModel material) {
+    public RawMaterial putRawMaterial(@PathVariable("id") Long id, @RequestBody RawMaterialModelImage material) {
         return rawMaterialService.putById(id, material);
     }
 
     @PostMapping()
-    public RawMaterial postRawMaterial(@RequestBody RawMaterialModel material) {
+    public RawMaterial postRawMaterial(@RequestBody RawMaterialModelImage material) {
         return rawMaterialService.create(material);
     }
 

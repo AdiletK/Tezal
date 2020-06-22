@@ -14,6 +14,8 @@ public interface RateService {
 
     List<RateModel> findAllByOrgId(Long id);
 
+    List<RateModel> findAllByOrgIdCatId(Long id, Long catId);
+
     Page<RateModel> findAllByOrgIdAndByNameOrDescription(Long id, String search, Pageable pageable);
 
     Rate create(RateModel rateModel);

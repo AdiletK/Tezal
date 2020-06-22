@@ -82,6 +82,7 @@ public class OrganizationRestController {
     public List<OrganizationModel> getAllOrgs() {
         return organizationService.findAllOrganizationList();
     }
+
     @GetMapping("/list/category/{id}")
     public List<OrganizationModel> getAllOrgsByCategoryId(@PathVariable Long id) {
         return organizationService.findAllOrganizationListByCategoryId(id);

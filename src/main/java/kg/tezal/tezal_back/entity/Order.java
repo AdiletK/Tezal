@@ -28,7 +28,7 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     @JoinColumn(name = "order_status")
-    private OrderStatus ordersStatus;
+    private OrderStatus ordersStatus = OrderStatus.AWAITING;
 
     @ManyToOne
     @JsonIgnore
@@ -41,7 +41,7 @@ public class Order {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "organization_id")
+    @JoinColumn(name = "organization_id") 
     private Organization organization;
 
     @CreationTimestamp

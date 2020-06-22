@@ -16,6 +16,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("select new kg.tezal.tezal_back.model.OrderModel(orders.id, orders.ordersStatus, orders.user.id, orders.client.id, orders.client.firstName, orders.client.lastName, orders.organization.id, orders.organization.name, orders.updateDate) FROM Order orders WHERE organization_id = :id  ORDER BY  organization_id ASC")
     List<OrderModel> findAllByOrgId(@Param("id") Long id);
 
+    @Query("select new kg.tezal.tezal_back.model.OrderModel(orders.id, orders.ordersStatus, orders.user.id, orders.client.id, orders.client.firstName, orders.client.lastName, orders.organization.id, orders.organization.name, orders.updateDate) " +
+            "FROM Order orders WHERE orders.client.id = :id  ORDER BY  orders.client.id ASC")
+    List<OrderModel> findAllByClientId(@Param("id") Long id);
+
     @Query("select new kg.tezal.tezal_back.model.OrderModel(orders.id, orders.ordersStatus, orders.user.id, orders.client.id, orders.client.firstName, orders.client.lastName, orders.organization.id, orders.organization.name, orders.updateDate) FROM Order orders WHERE orders.id = :id ")
     OrderModel getOrderById(@Param("id") Long id);
 

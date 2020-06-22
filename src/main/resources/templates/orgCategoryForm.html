@@ -44,7 +44,7 @@
                         <p th:if="${#fields.hasErrors('name')}" style="color:red;" th:errors="*{name}">Incorrect LP</p>
 
                         <label for="description" class="text-dark font-bold" data-th-text="#{org_categoryForm.label.desc}"></label>
-                        <textarea id="description" class="form-control" th:text=" ${category} ? ${category.description} : '' " th:field="*{description}" minlength="50" maxlength="255" required></textarea>
+                        <textarea id="description" class="form-control" th:text=" ${category} ? ${category.description} : '' " th:field="*{description}" minlength="50" maxlength="250" required></textarea>
                         <p th:if="${#fields.hasErrors('description')}" style="color: red;"
                            th:errors="*{description}">Incorrect LP</p>
                         <!--                            <div class="col-md-1 float-right">-->

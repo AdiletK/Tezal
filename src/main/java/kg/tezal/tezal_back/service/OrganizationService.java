@@ -29,11 +29,12 @@ public interface OrganizationService {
     Organization putById(Long id, OrganizationModelImage organization);
 
     List<OrganizationModel> findAllOrganizationList();
-    List<OrganizationModel> findAllOrganizationListByCategoryId(Long catId);
 
     List<OrganizationModel> getOrganizationListByClientId(Long id);
 
     List<OrganizationModel> nextOrganizationListByClientIdAndCategoryId(Long clientId, Long categoryId, Long lastId, Integer limit);
 
     OrganizationModel getOrganizationById(Long id);
+
+    List<OrganizationModel> findAllOrganizationListByCategoryId(Long id);
 }

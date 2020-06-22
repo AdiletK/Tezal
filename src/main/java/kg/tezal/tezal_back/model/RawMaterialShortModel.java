@@ -13,4 +13,5 @@ public class RawMaterialShortModel {
     private Long id;
     private String name;
     private Float volume;
+    private String image;
 }

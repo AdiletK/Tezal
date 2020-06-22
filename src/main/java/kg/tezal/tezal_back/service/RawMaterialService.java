@@ -2,6 +2,7 @@ package kg.tezal.tezal_back.service;
 
 import kg.tezal.tezal_back.entity.RawMaterial;
 import kg.tezal.tezal_back.model.RawMaterialModel;
+import kg.tezal.tezal_back.model.RawMaterialModelImage;
 import kg.tezal.tezal_back.model.RawMaterialShortModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,11 +14,13 @@ public interface RawMaterialService {
 
     Page<RawMaterialModel> findAllByNameOrDescription(String search, Pageable pageable);
 
-    RawMaterial create(RawMaterialModel materialModel);
+    Page<RawMaterialModel> findAllByNameOrDescription(Pageable pageable);
+
+    RawMaterial create(RawMaterialModelImage materialModel);
 
     String deleteById(Long id);
 
-    RawMaterial putById(Long id, RawMaterialModel materialModel);
+    RawMaterial putById(Long id, RawMaterialModelImage materialModel);
 
     RawMaterialModel getRawMaterialById(Long id);
 

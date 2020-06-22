@@ -12,16 +12,20 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface RateRepository extends JpaRepository<Rate, Long> {
-    @Query("select new kg.tezal.tezal_back.model.RateModel(rate.id, rate.wholesalePrice, rate.retailPrice, rate.quantityInStock, rate.rawMaterial.id, rate.rawMaterial.name, rate.organization.id, rate.organization.name) FROM Rate rate WHERE rate.organization.id = :id  ORDER BY rate.organization.id ASC")
+    @Query("select new kg.tezal.tezal_back.model.RateModel(rate.id, rate.wholesalePrice, rate.retailPrice, rate.quantityInStock, rate.rawMaterial.id, rate.rawMaterial.name,rate.rawMaterial.materialCategory.name, rate.organization.id, rate.organization.name, rate.rawMaterial.image) FROM Rate rate WHERE rate.organization.id = :id  ORDER BY rate.organization.id ASC")
     List<RateModel> findAllByOrgId(@Param("id") Long id);
 
-    @Query("select new kg.tezal.tezal_back.model.RateModel(rate.id, rate.wholesalePrice, rate.retailPrice, rate.quantityInStock, rate.rawMaterial.id, rate.rawMaterial.name, rate.organization.id, rate.organization.name) FROM Rate rate WHERE rate.id = :id ")
+    @Query("select new kg.tezal.tezal_back.model.RateModel(rate.id, rate.wholesalePrice, rate.retailPrice, rate.quantityInStock, rate.rawMaterial.id, rate.rawMaterial.name,rate.rawMaterial.materialCategory.name, rate.organization.id, rate.organization.name, rate.rawMaterial.image) " +
+            "FROM Rate rate WHERE rate.organization.id = :id and rate.rawMaterial.materialCategory.id = :catId  ORDER BY rate.organization.id ASC")
+    List<RateModel> findAllByOrgIdCatId(Long id, Long catId);
+
+    @Query("select new kg.tezal.tezal_back.model.RateModel(rate.id, rate.wholesalePrice, rate.retailPrice, rate.quantityInStock, rate.rawMaterial.id, rate.rawMaterial.name,rate.rawMaterial.materialCategory.name, rate.organization.id, rate.organization.name) FROM Rate rate WHERE rate.id = :id ")
     RateModel getRateById(@Param("id") Long id);
 
-    @Query("select new kg.tezal.tezal_back.model.RateModel(rate.id, rate.wholesalePrice, rate.retailPrice, rate.quantityInStock, rate.rawMaterial.id, rate.rawMaterial.name, rate.organization.id, rate.organization.name) FROM Rate rate " +
+    @Query("select new kg.tezal.tezal_back.model.RateModel(rate.id, rate.wholesalePrice, rate.retailPrice, rate.quantityInStock, rate.rawMaterial.id, rate.rawMaterial.name,rate.rawMaterial.materialCategory.name, rate.organization.id, rate.organization.name) FROM Rate rate " +
             "WHERE rate.organization.id = :orgId and rate.rawMaterial.id =:matId")
     RateModel getRateByOrgIdAndRawMaterial(Long orgId, Long matId);
 
-    @Query("select new kg.tezal.tezal_back.model.RateModel(rate.id, rate.wholesalePrice, rate.retailPrice, rate.quantityInStock, rate.rawMaterial.id, rate.rawMaterial.name, rate.organization.id, rate.organization.name) FROM Rate rate WHERE rate.organization.id = :id and (lower(rate.rawMaterial.name) like %:search% or lower(rate.rawMaterial.description) like %:search%) ORDER BY rate.id ASC")
+    @Query("select new kg.tezal.tezal_back.model.RateModel(rate.id, rate.wholesalePrice, rate.retailPrice, rate.quantityInStock, rate.rawMaterial.id, rate.rawMaterial.name, rate.rawMaterial.materialCategory.name, rate.organization.id, rate.organization.name, rate.rawMaterial.image) FROM Rate rate WHERE rate.organization.id = :id and (lower(rate.rawMaterial.name) like %:search% or lower(rate.rawMaterial.description) like %:search%) ORDER BY rate.id ASC")
     Page<RateModel> findAllByOrgIdAndByNameOrDescription(@Param("id") Long id, String search, Pageable pageable);
 }

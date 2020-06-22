@@ -24,6 +24,9 @@ public class RawMaterial {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rawMaterial_seq")
     private Long id;
 
+    @Column(name = "image")
+    private String image;
+
     @Column(nullable = false)
     private String name;
 

@@ -18,7 +18,7 @@
         <div class="card">
             <div class="card-body">
                 <form id="formCreate" action="#" th:action="${add} ? @{addMaterial} :
-                'update/' + ${orderMaterial.id}"  th:object="${orderMaterial}" method="post">
+                ('update/' + ${orderMaterial.id})"  th:object="${orderMaterial}" method="post">
                     <div class="form-group">
                         <div class="form-group">
                             <label class="text-dark font-bold col-form-label col-form-label" for="input-select" data-th-text="#{rate.label.product}"></label>
@@ -123,11 +123,6 @@
 
             </div>
         </div>
-
     </div>
-    <!-- ============================================================== -->
-    <!-- end profile -->
-    <!-- ============================================================== -->
-</div>
 </body>
 </html>

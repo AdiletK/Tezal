@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 //@PreAuthorize(value = "MANAGER")
@@ -40,8 +38,8 @@ public class ReportController {
     @GetMapping
     public String init(Model model){
         model.addAttribute("typeOfReport", getTypeOfReport());
-        model.addAttribute("dateFrom", date());
-        model.addAttribute("dateTo", date());
+//        model.addAttribute("dateFrom", date());
+//        model.addAttribute("dateTo", date());
         return "reportForm";
     }
 
@@ -67,11 +65,11 @@ public class ReportController {
         orgId = user.getOrganization().getId();
     }
 
-    private String date() {
-        String pattern = "dd-MM-yyyy";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        return simpleDateFormat.format(new Date());
-    }
+//    private String date() {
+////        String pattern = "dd-MM-yyyy";
+////        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+////        return simpleDateFormat.format(new Date());
+//    }
     private List<TypeOfReport> getTypeOfReport() {
         if (list != null) return list;
         list = new ArrayList<>();

@@ -1,5 +1,6 @@
 <!doctype html>
 <html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{layout}">
 <head>
     <title data-th-text="#{label.category}"></title>
@@ -15,8 +16,8 @@
                     </div>
                     <div class="col-md-2 float-right">
                         <div class="row">
-                            <div class="col-sm-6">
-                                <a class="btn btn-success m-t-10" th:href="@{form}" data-th-text="#{button.label.create}"></a>
+                            <div sec:authorize="hasRole('MANAGER')" class="col-sm-6">
+                                <a  class="btn btn-success m-t-10" th:href="@{form}" data-th-text="#{button.label.create}"></a>
                             </div>
                         </div>
                     </div>

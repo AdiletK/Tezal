@@ -22,4 +22,6 @@ public class RawMaterialModel {
     private int amountInBlock;
     private Long materialCategoryId;
     private String materialCategoryName;
+    private String image;
+
 }

@@ -24,8 +24,22 @@ public class RateModel {
 
     private Long rawMaterialId;
     private String rawMaterialName;
+    private String rawMaterialCategory;
 
     private Long organizationId;
     private String organizationName;
 
+    private String rawMaterialImage;
+
+    public RateModel(Long id, @NotNull Float wholesalePrice, @NotNull Float retailPrice, @NotNull Float quantityInStock, Long rawMaterialId, String rawMaterialName, String rawMaterialCategory, Long organizationId, String organizationName) {
+        this.id = id;
+        this.wholesalePrice = wholesalePrice;
+        this.retailPrice = retailPrice;
+        this.quantityInStock = quantityInStock;
+        this.rawMaterialId = rawMaterialId;
+        this.rawMaterialName = rawMaterialName;
+        this.rawMaterialCategory = rawMaterialCategory;
+        this.organizationId = organizationId;
+        this.organizationName = organizationName;
+    }
 }

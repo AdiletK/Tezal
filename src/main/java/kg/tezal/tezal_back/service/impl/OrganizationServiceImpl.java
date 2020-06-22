@@ -65,7 +65,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         if(organizationModelImage.getImage() != null && organizationModelImage.getImage().getContentType().contains("image"))
             organization.setImage(UtilBase64Image.encoder(organizationModelImage.getImage()));
 
-        organization.setStatus(organizationModelImage.getStatus() != null);
+        organization.setStatus(organizationModelImage.getStatus());
         organization.setOrgCategory(orgCategoryRestController.getOrgCategoryById(organizationModelImage.getCategoryId()));
         organization.setDescription(organizationModelImage.getDescription());
         Long id = organizationRepository.save(organization).getId();
@@ -110,10 +110,8 @@ public class OrganizationServiceImpl implements OrganizationService {
                 .map(newOrganization -> {
                     newOrganization.setDescription(organizationModelImage.getDescription());
                     newOrganization.setName(organizationModelImage.getName());
-                    if (organizationModelImage.getImage() != null && organizationModelImage.getImage().getContentType().contains("image")) {
+                    if (organizationModelImage.getImage() != null && organizationModelImage.getImage().getContentType().contains("image"))
                         newOrganization.setImage(UtilBase64Image.encoder(organizationModelImage.getImage()));
-                        System.out.println("-----------------------Image");
-                    }
 //                    newOrganization.setClients(organization.getClients());
 //                    if (organizationModelImage.getStatus()==null)
 //                        newOrganization.setStatus(false);
@@ -149,9 +147,6 @@ public class OrganizationServiceImpl implements OrganizationService {
     public List<OrganizationModel> findAllOrganizationList() {
         return organizationRepository.findAllOrganizationList();
     }
-    public List<OrganizationModel> findAllOrganizationListByCategoryId(Long catId) {
-        return organizationRepository.findAllOrganizationListByCategoryId(catId);
-    }
 
     public List<OrganizationModel> getOrganizationListByClientId(Long id) {
         return organizationDao.getOrgByClientId(id);
@@ -164,5 +159,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     public OrganizationModel getOrganizationById(Long id) {
         return organizationRepository.getOrganizationById(id);
+    }
+
+    public List<OrganizationModel> findAllOrganizationListByCategoryId(Long catId) {
+        return organizationRepository.findAllOrganizationListByCategoryId(catId);
     }
 }

@@ -19,7 +19,6 @@ public interface OrganizationRepository extends JpaRepository<Organization, Long
             "FROM Organization organization join OrgCategory orgCategory on organization.orgCategory = orgCategory.id " +
             "where organization.orgCategory.id =:id")
     List<OrganizationModel> findAllOrganizationListByCategoryId(Long id);
-
     @Query("select new kg.tezal.tezal_back.model.OrganizationModel(organization.id, organization.image, organization.status, organization.name,orgCategory.id,orgCategory.name, organization.description) FROM Organization organization join OrgCategory orgCategory on organization.orgCategory = orgCategory.id where organization.id = :id")
     OrganizationModel getOrganizationById(Long id);
 

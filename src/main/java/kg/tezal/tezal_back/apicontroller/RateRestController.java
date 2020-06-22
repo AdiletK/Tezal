@@ -28,6 +28,10 @@ public class RateRestController {
     public List<RateModel> findAllByOrgId(@PathVariable Long orgId) {
         return rateService.findAllByOrgId(orgId);
     }
+    @GetMapping("/model/list/{orgId}/{catId}")
+    public List<RateModel> findAllByOrgIdAndCatId(@PathVariable Long orgId, @PathVariable Long catId) {
+        return rateService.findAllByOrgIdCatId(orgId, catId);
+    }
     @PostMapping
     public Rate create(@RequestBody RateModel rateModel) {
         return rateService.create(rateModel);
